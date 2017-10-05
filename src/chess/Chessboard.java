@@ -8,19 +8,65 @@ public class Chessboard {
 	public static final int BOARD_SIZE = 8;
 
 	// String pieces = "♔♕♖♗♘♙♚♛♜♝♞♟"; just characters
+	/*
+	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
+	 */
 	Piece[][] board; // package default
 
-	final static char[] alpha = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+	final static char[]	files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+	final static int[] 	ranks = {8, 7, 6, 5, 4, 3, 2, 1};
+
 
 	
 	public Chessboard() {
-		board = new Piece[8][8];
+		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
 	}
 
-	// add a piece to board
-	public void set(Piece piece, Position position) {
-		board[position.x()][position.y()] = piece;
+
+	public void clear() {
+		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
 	}
+
+
+	public void setup() {
+
+
+		for (char f : files) {
+			this.set(new Pawn(Color.WHITE), new Square(2, f));
+		}
+
+
+		for (char f : files) {
+			this.set(new Pawn(Color.BLACK), new Square(7, f));
+		}
+
+	}
+
+
+	// add a piece to board
+	public void set(Piece piece, Square position) {
+		this.board[position.rank][position.file] = piece;
+	}
+
+
+	// returns Piece Object from position
+	public Piece get(Square position) {
+		return this.board[position.rank][position.file];
+	}
+
+
+	// removes Piece from the board on position
+	public void remove(Square position) {
+		this.board[position.rank][position.file] = null;
+	}
+
+
+	// perform a move
+	public void move(Square from, Square to) {
+		this.set(this.get(from), to);
+		this.remove(from);
+	}
+
 
 	// returns pseudo graphical visualization
 	public String toString() {
@@ -30,31 +76,42 @@ public class Chessboard {
 		String cor = "‧"; // corner character
 
 		builder.append(cor);
-		for (char c : alpha) {
+
+		for (char c : files) {
 			builder.append(sep + c);
 		}
+
 		builder.append(sep + cor + "\n");
 
-		for (int i = 0; i < BOARD_SIZE; i++) {
-			builder.append(BOARD_SIZE - i);
-			for (int j = 0; j < BOARD_SIZE; j++) {
+		for (int rank : ranks) {
+			builder.append(rank);
+
+			for (char file : files) {
 				builder.append(sep);
-				if (this.board[i][j] != null) {
-					builder.append(this.board[i][j].toString());
+
+				Square cell = new Square(rank, file);
+
+				if (this.get(cell) != null) {
+					builder.append(this.get(cell).toString());
 				} else {
-					builder.append(
-						(i + j) % 2 == 1 ? '⬜' : '⬛'
-					);
+					builder.append(cell.toString());
 				}
 			}
-			builder.append(sep + (BOARD_SIZE - i) + "\n");
+
+			builder.append(sep + rank + "\n");
 		}
+
 		builder.append(cor);
-		for (char c : alpha) {
+
+		for (char c : files) {
 			builder.append(sep + c);
 		}
+
 		builder.append(sep + cor);
 
 		return builder.toString();
 	}
+
+
+	// TODO isLegalMove(); or think about it
 }

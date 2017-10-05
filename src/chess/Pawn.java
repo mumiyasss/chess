@@ -13,8 +13,8 @@ public class Pawn extends Piece {
 		}
 	}
 
-	// TODO
-	public boolean isLegalMove(Position destination, Position source) {
+	// TODO or check Chessboard; think about it
+	public boolean isLegalMove(Square from, Square to) {
 		return true;
 	}
 

@@ -13,20 +13,25 @@ public class ChessGame {
 	static void run(Chessboard board) {
 
 		// just demo
-		for (int i = 0; i < Chessboard.BOARD_SIZE; i++) {
-			board.set(new Pawn(Color.WHITE), new Position(6, i));
-		}
+		
+		board.setup();
+
+		Scanner scanner = new Scanner(System.in);
+		
+		// while (true) {
+			
+		// }
+
 
 		System.out.println(board);
+
+
 	}
 
-	// Returns move in acceptable format
-	static Move inputHandler(Scanner scanner) {
-		// TODO
-		String query = scanner.nextLine();
-
-		// ...
-	}
+	// think about it
+	// static Move parse(String line) {
+	// 	// TODO
+	// }
 }
 
 
