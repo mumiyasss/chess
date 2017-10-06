@@ -32,12 +32,12 @@ public class Chessboard {
 
 
 		for (char f : files) {
-			this.set(new Pawn(Color.WHITE), new Square(2, f));
+			this.set(new Pawn(Color.WHITE), new Square(f, 2));
 		}
 
 
 		for (char f : files) {
-			this.set(new Pawn(Color.BLACK), new Square(7, f));
+			this.set(new Pawn(Color.BLACK), new Square(f, 7));
 		}
 
 	}
@@ -67,6 +67,11 @@ public class Chessboard {
 		this.remove(from);
 	}
 
+	// perform a move
+	public void move(Move move) throws Exception {
+		this.move(move.from, move.to);
+	}
+
 
 	// returns pseudo graphical visualization
 	public String toString() {
@@ -89,12 +94,12 @@ public class Chessboard {
 			for (char file : files) {
 				builder.append(sep);
 
-				Square cell = new Square(rank, file);
+				Square cell = new Square(file, rank);
 
 				if (this.get(cell) != null) {
 					builder.append(this.get(cell).toString());
 				} else {
-					builder.append(cell.toString());
+					builder.append(cell.draw());
 				}
 			}
 
