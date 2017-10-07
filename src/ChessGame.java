@@ -17,8 +17,11 @@ public class ChessGame {
 		Scanner scanner = new Scanner(System.in);
 		
 		while (true) {
-			System.out.println(board);
 
+			clearScreen();
+
+			System.out.println("_______CHESS_______");
+			System.out.println(board);
 
 			String query = scanner.nextLine().trim();
 
@@ -38,11 +41,21 @@ public class ChessGame {
 				System.out.println("Error: " + e);
 				continue;
 			}
-
 		} // EOF WHILE TRUE 
 
 
 	} // EOF MAIN
+
+
+	static void clearScreen() {
+		// clears the screen
+		// idk the meaning
+		final String ANSI_CLS = "\u001b[2J";
+		final String ANSI_HOME = "\u001b[H";
+		System.out.print(ANSI_CLS + ANSI_HOME);
+		System.out.flush();
+	}
+
 
 	static Move nextMove(String query) throws Exception {
 		Move move;
@@ -54,6 +67,7 @@ public class ChessGame {
 
 		return new Move(from, to);
 	}
+
 
 	static char[] parse(String string) throws Exception {
 		char[] parsedStr = new char[4];
@@ -75,9 +89,11 @@ public class ChessGame {
 		return parsedStr;
 	}
 
+
 	static boolean isAplha(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 	}
+
 
 	static boolean isDigit(char c) {
 		return c >= '0' && c <= '9';
