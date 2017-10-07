@@ -44,7 +44,7 @@ public class ChessGame {
 		} // EOF WHILE TRUE 
 
 
-	} // EOF MAIN
+	} // EOF RUN
 
 
 	static void clearScreen() {
