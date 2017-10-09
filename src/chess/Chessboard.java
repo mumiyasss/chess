@@ -5,13 +5,13 @@ package chess;
 
 public class Chessboard {
 
-	public static final int BOARD_SIZE = 8;
+	protected static final int BOARD_SIZE = 8;
 
 	// String pieces = "♔♕♖♗♘♙♚♛♜♝♞♟"; just characters
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
 	 */
-	Piece[][] board; // package default
+	protected Piece[][] board; // package default
 
 	final static char[]	files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 	final static int[] 	ranks = {8, 7, 6, 5, 4, 3, 2, 1};

@@ -10,7 +10,7 @@ public class ChessGame {
 	}
 
 	// Runs the game
-	static void run(Chessboard board) {
+	private static void run(Chessboard board) {
 		// just demo
 		board.setup();
 
@@ -39,15 +39,17 @@ public class ChessGame {
 				board.move(move);
 			} catch (Exception e) {
 				System.out.println("Error: " + e);
-				continue;
+//				continue; // for a while
 			}
+
+
 		} // EOF WHILE TRUE 
 
 
 	} // EOF RUN
 
 
-	static void clearScreen() {
+	private static void clearScreen() {
 		// clears the screen
 		// idk the meaning
 		final String ANSI_CLS = "\u001b[2J";
@@ -57,9 +59,7 @@ public class ChessGame {
 	}
 
 
-	static Move nextMove(String query) throws Exception {
-		Move move;
-
+	private static Move nextMove(String query) throws Exception {
 		char[] parsedStr = parse(query);
 
 		Square from = new Square(parsedStr[0], parsedStr[1] - '0');
@@ -69,16 +69,20 @@ public class ChessGame {
 	}
 
 
-	static char[] parse(String string) throws Exception {
+	private static char[] parse(String string) throws Exception {
 		char[] parsedStr = new char[4];
 		int it = 0;
 
 		int i = 0;
 		for (int c = 0; c < 2; c++) {
-			for (; !isAplha(string.charAt(i)); i++);
+			while (!isAplha(string.charAt(i))) {
+				++i;
+			}
 			parsedStr[it++] = string.charAt(i);
 
-			for (; !isDigit(string.charAt(i)); i++);
+			while (!isDigit(string.charAt(i))) {
+				++i;
+			}
 			parsedStr[it++] = string.charAt(i);
 		}
 
@@ -90,12 +94,12 @@ public class ChessGame {
 	}
 
 
-	static boolean isAplha(char c) {
+	private static boolean isAplha(char c) {
 		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 	}
 
 
-	static boolean isDigit(char c) {
+	private static boolean isDigit(char c) {
 		return c >= '0' && c <= '9';
 	}
 
