@@ -55,9 +55,9 @@ public class Chessboard {
 	public void move(Move move) throws Exception {
 
 		// TODO check if move is legal
-		if (!isLegal(move)) {
-			throw new 
-		}
+		//if (!isLegal(move)) {
+		//	throw new 
+		//}
 
 		this.set(this.get(move.from), move.to);
 		this.remove(move.from);
