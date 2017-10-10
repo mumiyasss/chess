@@ -5,15 +5,23 @@ package chess;
 // Describes a move
 // Две пары координат
 public class Move {
-	final public Square from;
-	final public Square to;
+	final public Square FROM;
+	final public Square TO;
 
 	public Move(Square from, Square to) {
-		this.from = from;
-		this.to = to;
+		this.FROM = from;
+		this.TO = to;
+	}
+	
+	public Square get_from_square() {
+		return FROM;
+	}
+	
+	public Square get_to_square() {
+		return TO;
 	}
 
 	public String toString() {
-		return from + " " + to;
+		return FROM + " " + TO;
 	}
 }

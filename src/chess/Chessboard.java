@@ -55,12 +55,17 @@ public class Chessboard {
 	public void move(Move move) throws Exception {
 
 		// TODO check if move is legal
-		//if (!isLegal(move)) {
-		//	throw new 
-		//}
-
-		this.set(this.get(move.from), move.to);
-		this.remove(move.from);
+		Square this_piece_position = move.get_from_square();
+		
+		Piece this_piece = 
+			this.board[this_piece_position.rank][this_piece_position.file];	
+	
+		if(this_piece.isLegalMove(move)) {
+			this.set(this.get(move.get_from_square()), move.get_to_square());
+			this.remove(move.get_from_square());
+		} else {
+			System.out.println("ILLEGAL");
+		}
 
 	}
 
