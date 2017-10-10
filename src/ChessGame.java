@@ -98,16 +98,6 @@ public class ChessGame {
 	private static boolean isDigit(char c) {
 		return c >= '0' && c <= '9';
 	}
-
-	
-	static void clearScreen() {
-		// clears the screen
-		// idk the meaning
-		final String ANSI_CLS = "\u001b[2J";
-		final String ANSI_HOME = "\u001b[H";
-		System.out.print(ANSI_CLS + ANSI_HOME);
-		System.out.flush();
-	}
 }
 
 
