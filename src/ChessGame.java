@@ -14,15 +14,13 @@ public class ChessGame {
 
 		Scanner scanner = new Scanner(System.in);
 
-		
 		while (true) {
-
 			clearScreen();
 
 			System.out.println("_______CHESS_______");
 			System.out.println(board);
 			
-			// Считывание пользовательского ввода
+			// Считывание пользовательского ввода 
 			String query = scanner.nextLine().trim();
 
 			// Проверка на пустую строку при вводе
@@ -30,12 +28,12 @@ public class ChessGame {
 				continue;
 			}
 
-			// Выход из приложения при нажатии на '/'
+			// Выход из приложения при нажатии на '/' << or /exit
 			if (query.charAt(0) == '/') {
 				return;
 			}
 			
-			Move move; // Много раз выделяется памяти?
+			Move move; // Много раз выделяется памяти? << only 1 time
 			try {
 				move = nextMove(query);
 				board.move(move);
@@ -43,19 +41,10 @@ public class ChessGame {
 				System.out.println("Error: " + e);
 //				continue; // for a while
 			}
-
-
 		} // EOF WHILE TRUE 
-
-
 	} // EOF RUN
 
 
-<<<<<<< HEAD
-	static Move nextMove(String query) throws Exception {
-		Move move;
-
-=======
 	private static void clearScreen() {
 		// clears the screen
 		// idk the meaning
@@ -66,12 +55,11 @@ public class ChessGame {
 	}
 
 
-	private static Move nextMove(String query) throws Exception {
->>>>>>> 0bf7a4d6077ca9124bb1f0cd93cbf65c94a6598f
+	static Move nextMove(String query) throws Exception {
 		char[] parsedStr = parse(query);
 
 		Square from = new Square(parsedStr[0], parsedStr[1] - '0');
-		Square to	= new Square(parsedStr[2], parsedStr[3] - '0');
+		Square to = new Square(parsedStr[2], parsedStr[3] - '0');
 
 		return new Move(from, to);
 	}
