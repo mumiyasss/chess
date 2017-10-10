@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd src
+javac -d ../bin ChessGame.java
+cd ..
+java -cp bin ChessGame

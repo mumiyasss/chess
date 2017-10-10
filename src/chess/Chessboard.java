@@ -13,8 +13,8 @@ public class Chessboard {
 	 */
 	Piece[][] board; // package default
 
-	final static char[]	files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
-	final static int[] 	ranks = {8, 7, 6, 5, 4, 3, 2, 1};
+	final static char[] files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+	final static  int[] ranks = {8, 7, 6, 5, 4, 3, 2, 1};
 
 
 	
@@ -22,20 +22,11 @@ public class Chessboard {
 		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
 	}
 
-
-	public void clear() {
-		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
-	}
-
-
 	public void setup() {
-
-
+		// Передаются кординаты в метод set()
 		for (char f : files) {
 			this.set(new Pawn(Color.WHITE), new Square(f, 2));
 		}
-
-
 		for (char f : files) {
 			this.set(new Pawn(Color.BLACK), new Square(f, 7));
 		}
@@ -48,28 +39,29 @@ public class Chessboard {
 		this.board[position.rank][position.file] = piece;
 	}
 
-
 	// returns Piece Object from position
 	public Piece get(Square position) {
 		return this.board[position.rank][position.file];
 	}
 
-
 	// removes Piece from the board on position
+	// Вместо фигурки ставит null
 	public void remove(Square position) {
 		this.board[position.rank][position.file] = null;
 	}
 
 
 	// perform a move
-	public void move(Square from, Square to) {
-		this.set(this.get(from), to);
-		this.remove(from);
-	}
-
-	// perform a move
 	public void move(Move move) throws Exception {
-		this.move(move.from, move.to);
+
+		// TODO check if move is legal
+		if (!isLegal(move)) {
+			throw new 
+		}
+
+		this.set(this.get(move.from), move.to);
+		this.remove(move.from);
+
 	}
 
 

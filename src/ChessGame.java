@@ -1,8 +1,6 @@
 
-
 import java.util.Scanner;
 import chess.*;
-
 
 public class ChessGame {
 	public static void main(String[] args) {
@@ -15,6 +13,7 @@ public class ChessGame {
 		board.setup();
 
 		Scanner scanner = new Scanner(System.in);
+
 		
 		while (true) {
 
@@ -22,18 +21,21 @@ public class ChessGame {
 
 			System.out.println("_______CHESS_______");
 			System.out.println(board);
-
+			
+			// Считывание пользовательского ввода
 			String query = scanner.nextLine().trim();
 
+			// Проверка на пустую строку при вводе
 			if (query.isEmpty()) {
 				continue;
 			}
 
+			// Выход из приложения при нажатии на '/'
 			if (query.charAt(0) == '/') {
 				return;
 			}
-
-			Move move;
+			
+			Move move; // Много раз выделяется памяти?
 			try {
 				move = nextMove(query);
 				board.move(move);
@@ -47,16 +49,6 @@ public class ChessGame {
 	} // EOF RUN
 
 
-	static void clearScreen() {
-		// clears the screen
-		// idk the meaning
-		final String ANSI_CLS = "\u001b[2J";
-		final String ANSI_HOME = "\u001b[H";
-		System.out.print(ANSI_CLS + ANSI_HOME);
-		System.out.flush();
-	}
-
-
 	static Move nextMove(String query) throws Exception {
 		Move move;
 
@@ -68,7 +60,7 @@ public class ChessGame {
 		return new Move(from, to);
 	}
 
-
+	// Нужно выделить в отдельный класс
 	static char[] parse(String string) throws Exception {
 		char[] parsedStr = new char[4];
 		int it = 0;
@@ -99,6 +91,15 @@ public class ChessGame {
 		return c >= '0' && c <= '9';
 	}
 
+	
+	static void clearScreen() {
+		// clears the screen
+		// idk the meaning
+		final String ANSI_CLS = "\u001b[2J";
+		final String ANSI_HOME = "\u001b[H";
+		System.out.print(ANSI_CLS + ANSI_HOME);
+		System.out.flush();
+	}
 }
 
 
