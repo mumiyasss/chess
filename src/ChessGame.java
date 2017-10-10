@@ -76,13 +76,8 @@ public class ChessGame {
 		return new Move(from, to);
 	}
 
-<<<<<<< HEAD
-	// Нужно выделить в отдельный класс
-	static char[] parse(String string) throws Exception {
-=======
 
 	private static char[] parse(String string) throws Exception {
->>>>>>> 0bf7a4d6077ca9124bb1f0cd93cbf65c94a6598f
 		char[] parsedStr = new char[4];
 		int it = 0;
 
