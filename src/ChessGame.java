@@ -21,12 +21,13 @@ public class ChessGame {
 	// Runs the game
 	static void run(Chessboard board, GameHistory history) {
 		// just demo
-		board.setup();
 
 		Scanner scanner = new Scanner(System.in);
 
 		if (!history.isEmpty()) {
-			
+			board.setup(history);
+		} else {
+			board.setup();
 		}
 
 		while (true) {

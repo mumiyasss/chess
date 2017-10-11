@@ -8,16 +8,15 @@ import java.io.IOException;
  */
 public class InputHandler {
 
+	// clears the screen
 	public static void clearScreen() {
-		// clears the screen
-		// idk the meaning
 		final String ANSI_CLS = "\u001b[2J";
 		final String ANSI_HOME = "\u001b[H";
 		System.out.print(ANSI_CLS + ANSI_HOME);
 		System.out.flush();
 	}
 
-
+	// gets a string and returns a move if its possible
 	public static Move getNextMove(String query) throws IOException {
 		char[] parsedStr = parse(query); // THROwS IO EXCEPTION
 
@@ -27,7 +26,7 @@ public class InputHandler {
 		return new Move(from, to);
 	}
 
-
+	// gets a line and takes only ([a-hA-H]\d){2}
 	private static char[] parse(String line) throws IOException {
 		char[] parsedStr = new char[4];
 		int it = 0;
@@ -52,11 +51,12 @@ public class InputHandler {
 		return parsedStr;
 	}
 
-
+	// true if c is a valid file
 	private static boolean isFile(char c) {
 		return (c >= 'a' && c <= 'h') || (c >= 'A' && c <= 'H');
 	}
 
+	// true if c is a valid rank
 	private static boolean isRank(char c) {
 		return c >= '1' && c <= '8';
 	}

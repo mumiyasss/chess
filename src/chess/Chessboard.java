@@ -55,7 +55,7 @@ public class Chessboard {
 	// LOAD CHESSBOARD TO CONTINUE THE GAME
 	public void setup(GameHistory history) {
 		for (Move m : history.log) {
-			
+			this.move(m);
 		}
 	}
 

@@ -19,13 +19,13 @@ import java.util.Date;
  * GameHistory
  */
 public class GameHistory {
-	ArrayList<String> log; // PACKAGE DEFAULT
+	ArrayList<Move> log; // PACKAGE DEFAULT
 	private int moveCount;
 
 	// creates empty history
 	public GameHistory() {
 		moveCount = 0;
-		log = new ArrayList<String>();
+		log = new ArrayList<Move>();
 	}
 
 	// copies history from file
@@ -36,13 +36,11 @@ public class GameHistory {
 		while (reader.hasNext()) {
 			this.add(InputHandler.getNextMove(reader.nextLine()));
 		}
-
-
 	}
 
 	public void add(Move move) {
 		++this.moveCount;
-		this.log.add(this.moveCount + ". " + move.toString());
+		this.log.add(move);
 	}
 
 	public boolean isEmpty() {
@@ -56,8 +54,11 @@ public class GameHistory {
 	public void log() {
 		String fileName = new Date() + ".log";
 		FileWriter writer = new FileWriter(fileName);
-		for (String s : this.log) {
-			writer.write(s);
+
+		int moveC = 1;
+		for (Move m : this.log) {
+			writer.write(moveC + m.toString());
+			moveC++;
 		}
 		writer.close();
 	}
