@@ -28,10 +28,12 @@ public class Pawn extends Piece {
 		if (relativeRankFrom == 2) { // Если пешка стоит вначале
 			// Вначале можно ходить только на 1 или 2 клетки вперед
 			if (relativeRankTO != 3 && relativeRankTO != 4) {  
+				
 				return false; 		
 			}
 		} else if (relativeRankFrom != (relativeRankTO - 1)) {
 			// Можно ходить только на одну клетку вперед
+			
 			return false;
 		}
 		 

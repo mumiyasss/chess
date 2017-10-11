@@ -10,6 +10,10 @@ abstract public class Piece {
 	public String toString() {
 		return Character.toString(icon);
 	}
+	
+	public Color get_color() {
+		return color;
+	}
 }
 
 

@@ -4,7 +4,7 @@ import chess.pieces.*;
 public class Chessboard {
 
 	protected static final int BOARD_SIZE = 8;
-
+ 	protected static int gameMoveNumber = 1; // Номер хода  
 	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
@@ -75,13 +75,19 @@ public class Chessboard {
 		Square this_piece_position = move.get_from_square();
 		
 		Piece this_piece = 
-			this.board[this_piece_position.rank][this_piece_position.file];	
-	
-		if(this_piece.isLegalMove(move)) {
-			this.set(this.get(move.get_from_square()), move.get_to_square());
-			this.remove(move.get_from_square());
+			this.board[this_piece_position.rank][this_piece_position.file];
+		// TODO Создать функцию обработчик (вынести все это)	
+		if((gameMoveNumber % 2 == 1 && this_piece.get_color() == Color.BLACK) ||
+			(gameMoveNumber % 2 == 0 && this_piece.get_color() == Color.WHITE)) {
+				System.out.println("ILLEGAL11111");
+		} else
+		if(!this_piece.isLegalMove(move)) {
+			System.out.println(this_piece);
+			System.out.println("ILLEGAL"); // TODO change to exception or smth
 		} else {
-			System.out.println("ILLEGAL");
+			this.set(this.get(move.get_from_square()), move.get_to_square());
+			this.remove(move.get_from_square());	
+			gameMoveNumber++; // Следующий ход
 		}
 
 	}
