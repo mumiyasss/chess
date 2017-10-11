@@ -13,27 +13,27 @@ public class Pawn extends Piece {
 	}
 
 	// TODO or check Chessboard; think about it
-	public boolean isLegalMove(Move move) {
+	public boolean isLegalMove(Move move, boolean chopping) {
 		//
 		// Описание ходов по правилам		
 		//	
 		// TODO можно ли перегружать как виртуальную функцию?
 		// (идет повторение элементов)
 		
-		int relativeRankFrom = move.FROM.rank; // TODO Позиция относительно игрока
-		int relativeRankTO = move.TO.rank;     // (какой цвет?)
-		int relativeFileFrom = move.FROM.file;
-		int relativeFileTo = move.TO.file;
+		int relativeRankFrom = move.FROM.rank + 1; // TODO Позиция относительно игрока
+		int relativeRankTO = move.TO.rank + 1;     // (какой цвет?)
+		int relativeFileFrom = move.FROM.file;     // TODO исправить
+		int relativeFileTo = move.TO.file;         // постоянное + 1
 		
 		if (relativeRankFrom == 2) { // Если пешка стоит вначале
 			// Вначале можно ходить только на 1 или 2 клетки вперед
 			if (relativeRankTO != 3 && relativeRankTO != 4) {  
-				
-				return false; 		
+                            System.out.println("NOW-1");
+                            return false; 		
 			}
 		} else if (relativeRankFrom != (relativeRankTO - 1)) {
 			// Можно ходить только на одну клетку вперед
-			
+                        System.out.println("NOW-2");
 			return false;
 		}
 		 

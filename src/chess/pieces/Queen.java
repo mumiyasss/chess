@@ -10,7 +10,7 @@ public class Queen extends Piece {
 			this.icon = '♛';
 		}
 	}
-	public boolean isLegalMove(Move move) {
+	public boolean isLegalMove(Move move, boolean chopping) {
 
 		return true;
 	}

@@ -10,7 +10,8 @@ public class King extends Piece {
 			this.icon = '♚';
 		}
 	}
-	public boolean isLegalMove(Move move) {
+        @Override // Почему не обязательно?
+	public boolean isLegalMove(Move move, boolean chopping) {
 
 		return true;
 	}

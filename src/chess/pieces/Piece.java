@@ -5,7 +5,7 @@ abstract public class Piece {
 	protected char icon;
 	protected Color color;
 
-	abstract public boolean isLegalMove(Move move);  
+	abstract public boolean isLegalMove(Move move, boolean chopping);  
 
 	public String toString() {
 		return Character.toString(icon);

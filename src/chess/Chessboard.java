@@ -22,8 +22,14 @@ public class Chessboard {
 
 	public void setup() {
 		/// Передаются кординаты в метод set()
-		
-		// Расставляем белые фигуры
+
+		// Сначала ставим все ячейки в null
+		for (char f : files) {
+			for (int r : ranks) {
+				this.remove(new Square(f, r));
+			}
+		}
+		// Теперь расставляем белые фигуры
 		for (char f : files) {
 			this.set(new Pawn(Color.WHITE), new Square(f, 2));
 		}
@@ -70,24 +76,49 @@ public class Chessboard {
 
 	// perform a move
 	public void move(Move move) throws Exception {
-
-		// TODO check if move is legal
 		Square this_piece_position = move.get_from_square();
-		
+		Square aim_position = move.get_to_square();
+
 		Piece this_piece = 
 			this.board[this_piece_position.rank][this_piece_position.file];
+		
+		Piece aimSquare = 
+			this.board[aim_position.rank][aim_position.file];
+
 		// TODO Создать функцию обработчик (вынести все это)	
-		if((gameMoveNumber % 2 == 1 && this_piece.get_color() == Color.BLACK) ||
+		System.out.println(move.FROM.rank);
+		 // Ходит ли нужный цвет?
+		if ((gameMoveNumber % 2 == 1 && this_piece.get_color() == Color.BLACK) ||
 			(gameMoveNumber % 2 == 0 && this_piece.get_color() == Color.WHITE)) {
-				System.out.println("ILLEGAL11111");
+				System.out.println("ILLEGAL-1");
+				//System.out.println(gameMoveNumber);
+				//System.out.println(gameMoveNumber % 2);
+				//System.out.println(this_piece.get_color());
+		} else 
+		// Если что-то стоит на клетке
+		if (aimSquare != null) {
+			Piece aimPiece = aimSquare; // Значит это уже не просто клетка, а фигура
+			// Проверяем, того же ли цвета фигура на новой клетке(своих рубить нельзя) 
+			if ((gameMoveNumber % 2 == 1 && aimPiece.get_color() == Color.WHITE) ||
+				(gameMoveNumber % 2 == 0 && aimPiece.get_color() == Color.BLACK)) {
+				System.out.println("ILLEGAL-2");
+			} else
+			{
+				// Будем рубить!
+				// Заменить true/false
+				if(this_piece.isLegalMove(move, true)) {}
+			}
 		} else
-		if(!this_piece.isLegalMove(move)) {
-			System.out.println(this_piece);
-			System.out.println("ILLEGAL"); // TODO change to exception or smth
-		} else {
-			this.set(this.get(move.get_from_square()), move.get_to_square());
-			this.remove(move.get_from_square());	
+		// Может ли так ходить фигура?
+		if(this_piece.isLegalMove(move, false)) { 
+			this.set(this.get(move.get_from_square()), aim_position);
+			this.remove(this_piece_position);	 // ISSUE не будет работать рокировка
 			gameMoveNumber++; // Следующий ход
+
+		} else {
+			
+			System.out.println(this_piece);
+			System.out.println("ILLEGAL-3"); // TODO change to exception or smth
 		}
 
 	}
