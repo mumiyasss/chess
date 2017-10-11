@@ -1,13 +1,11 @@
-
-
 package chess;
-
+import chess.pieces.*;
 
 public class Chessboard {
 
 	protected static final int BOARD_SIZE = 8;
 
-	// String pieces = "♔♕♖♗♘♙♚♛♜♝♞♟"; just characters
+	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
 	 */
@@ -23,14 +21,33 @@ public class Chessboard {
 	}
 
 	public void setup() {
-		// Передаются кординаты в метод set()
+		/// Передаются кординаты в метод set()
+		
+		// Расставляем белые фигуры
 		for (char f : files) {
 			this.set(new Pawn(Color.WHITE), new Square(f, 2));
 		}
+		this.set(new King(Color.WHITE), new Square('E', 1));
+		this.set(new Queen(Color.WHITE), new Square('D', 1));
+		this.set(new Bishop(Color.WHITE), new Square('C', 1));
+		this.set(new Bishop(Color.WHITE), new Square('F', 1));
+		this.set(new Knight(Color.WHITE), new Square('B', 1));
+		this.set(new Knight(Color.WHITE), new Square('G', 1));
+		this.set(new Rook(Color.WHITE), new Square('A', 1));
+		this.set(new Rook(Color.WHITE), new Square('H', 1));
+				
+		// Расставляем чёрные фигуры
 		for (char f : files) {
 			this.set(new Pawn(Color.BLACK), new Square(f, 7));
 		}
-
+		this.set(new King(Color.BLACK), new Square('E', 8));
+		this.set(new Queen(Color.BLACK), new Square('D', 8));
+		this.set(new Bishop(Color.BLACK), new Square('C', 8));
+		this.set(new Bishop(Color.BLACK), new Square('F', 8));
+		this.set(new Knight(Color.BLACK), new Square('B', 8));
+		this.set(new Knight(Color.BLACK), new Square('G', 8));
+		this.set(new Rook(Color.BLACK), new Square('A', 8));
+		this.set(new Rook(Color.BLACK), new Square('H', 8));
 	}
 
 

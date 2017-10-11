@@ -1,7 +1,5 @@
-
-
-package chess;
-
+package chess.pieces;
+import chess.*;
 
 public class Pawn extends Piece {
 	
