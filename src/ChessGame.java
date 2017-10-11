@@ -1,6 +1,7 @@
 
-import java.util.Scanner;
 import chess.*;
+import java.util.Scanner;
+import java.lang.Exception;
 
 public class ChessGame {
 	public static void main(String[] args) {
@@ -71,13 +72,13 @@ public class ChessGame {
 
 		int i = 0;
 		for (int c = 0; c < 2; c++) {
-			while (!isAplha(string.charAt(i))) {
-				++i;
+			while (!isFile(string.charAt(i))) {
+				i++;
 			}
 			parsedStr[it++] = string.charAt(i);
 
-			while (!isDigit(string.charAt(i))) {
-				++i;
+			while (!isRank(string.charAt(i))) {
+				i++;
 			}
 			parsedStr[it++] = string.charAt(i);
 		}
@@ -90,13 +91,13 @@ public class ChessGame {
 	}
 
 
-	private static boolean isAplha(char c) {
-		return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+	private static boolean isFile(char c) {
+		return (c >= 'a' && c <= 'h') || (c >= 'A' && c <= 'H');
 	}
 
 
-	private static boolean isDigit(char c) {
-		return c >= '0' && c <= '9';
+	private static boolean isRank(char c) {
+		return c >= '1' && c <= '8';
 	}
 }
 

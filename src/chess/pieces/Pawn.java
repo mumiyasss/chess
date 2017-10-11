@@ -20,10 +20,10 @@ public class Pawn extends Piece {
 		// TODO можно ли перегружать как виртуальную функцию?
 		// (идет повторение элементов)
 		
-		int relativeRankFrom = move.FROM.rank; // TODO Позиция относительно игрока
-		int relativeRankTO = move.TO.rank;     // (какой цвет?)
-		int relativeFileFrom = move.FROM.file;
-		int relativeFileTo = move.TO.file;
+		int relativeRankFrom = move.SOURCE.RANK; // TODO Позиция относительно игрока
+		int relativeRankTO = move.DESTINATION.RANK;     // (какой цвет?)
+		int relativeFileFrom = move.SOURCE.FILE;
+		int relativeFileTo = move.DESTINATION.FILE;
 		
 		if (relativeRankFrom == 2) { // Если пешка стоит вначале
 			// Вначале можно ходить только на 1 или 2 клетки вперед
@@ -38,7 +38,7 @@ public class Pawn extends Piece {
 		}
 		 
 		
-		if (move.FROM.rank == 7) {
+		if (move.DESTINATION.RANK == 7) {
 			// TODO описать создание новой фигуры
 		}
 		

@@ -4,7 +4,7 @@ import chess.pieces.*;
 public class Chessboard {
 
 	protected static final int BOARD_SIZE = 8;
- 	protected static int gameMoveNumber = 1; // Номер хода  
+ 	protected static int moveCount = 1; // Номер хода  
 	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
@@ -27,44 +27,44 @@ public class Chessboard {
 		for (char f : files) {
 			this.set(new Pawn(Color.WHITE), new Square(f, 2));
 		}
-		this.set(new King(Color.WHITE), new Square('E', 1));
-		this.set(new Queen(Color.WHITE), new Square('D', 1));
+		this.set(new   King(Color.WHITE), new Square('E', 1));
+		this.set(new  Queen(Color.WHITE), new Square('D', 1));
 		this.set(new Bishop(Color.WHITE), new Square('C', 1));
 		this.set(new Bishop(Color.WHITE), new Square('F', 1));
 		this.set(new Knight(Color.WHITE), new Square('B', 1));
 		this.set(new Knight(Color.WHITE), new Square('G', 1));
-		this.set(new Rook(Color.WHITE), new Square('A', 1));
-		this.set(new Rook(Color.WHITE), new Square('H', 1));
+		this.set(new   Rook(Color.WHITE), new Square('A', 1));
+		this.set(new   Rook(Color.WHITE), new Square('H', 1));
 				
 		// Расставляем чёрные фигуры
 		for (char f : files) {
 			this.set(new Pawn(Color.BLACK), new Square(f, 7));
 		}
-		this.set(new King(Color.BLACK), new Square('E', 8));
-		this.set(new Queen(Color.BLACK), new Square('D', 8));
+		this.set(new   King(Color.BLACK), new Square('E', 8));
+		this.set(new  Queen(Color.BLACK), new Square('D', 8));
 		this.set(new Bishop(Color.BLACK), new Square('C', 8));
 		this.set(new Bishop(Color.BLACK), new Square('F', 8));
 		this.set(new Knight(Color.BLACK), new Square('B', 8));
 		this.set(new Knight(Color.BLACK), new Square('G', 8));
-		this.set(new Rook(Color.BLACK), new Square('A', 8));
-		this.set(new Rook(Color.BLACK), new Square('H', 8));
+		this.set(new   Rook(Color.BLACK), new Square('A', 8));
+		this.set(new   Rook(Color.BLACK), new Square('H', 8));
 	}
 
 
 	// add a piece to board
 	public void set(Piece piece, Square position) {
-		this.board[position.rank][position.file] = piece;
+		this.board[position.RANK][position.FILE] = piece;
 	}
 
 	// returns Piece Object from position
 	public Piece get(Square position) {
-		return this.board[position.rank][position.file];
+		return this.board[position.RANK][position.FILE];
 	}
 
 	// removes Piece from the board on position
 	// Вместо фигурки ставит null
 	public void remove(Square position) {
-		this.board[position.rank][position.file] = null;
+		this.board[position.RANK][position.FILE] = null;
 	}
 
 
@@ -72,24 +72,24 @@ public class Chessboard {
 	public void move(Move move) throws Exception {
 
 		// TODO check if move is legal
-		Square this_piece_position = move.get_from_square();
+		Square currentPosition = move.SOURCE;
 		
-		Piece this_piece = 
-			this.board[this_piece_position.rank][this_piece_position.file];
+		Piece movingPiece = 
+			this.board[currentPosition.RANK][currentPosition.FILE];
 		// TODO Создать функцию обработчик (вынести все это)	
-		if((gameMoveNumber % 2 == 1 && this_piece.get_color() == Color.BLACK) ||
-			(gameMoveNumber % 2 == 0 && this_piece.get_color() == Color.WHITE)) {
+		if((moveCount % 2 == 1 && movingPiece.get_color() == Color.BLACK) ||
+			(moveCount % 2 == 0 && movingPiece.get_color() == Color.WHITE)) {
 				System.out.println("ILLEGAL11111");
-		} else
-		if(!this_piece.isLegalMove(move)) {
-			System.out.println(this_piece);
+				// !!! throw new IllegalMoveException(movingPiece + "cannot move like this");
+		} else if(!movingPiece.isLegalMove(move)) {
+			System.out.println(movingPiece);
 			System.out.println("ILLEGAL"); // TODO change to exception or smth
+			// !!! throw new IllegalMoveException(movingPiece + "cannot move like this");
 		} else {
-			this.set(this.get(move.get_from_square()), move.get_to_square());
-			this.remove(move.get_from_square());	
-			gameMoveNumber++; // Следующий ход
+			this.set(this.get(move.SOURCE), move.DESTINATION);
+			this.remove(move.SOURCE);	
+			this.moveCount++; // Следующий ход
 		}
-
 	}
 
 
