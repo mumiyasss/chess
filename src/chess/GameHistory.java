@@ -27,7 +27,9 @@ public class GameHistory {
 	}
 
 	// copies history from file
-	public GameHistory(String fileName) throws FileNotFoundException, IOException {
+	// then Chessboard performs all these moves
+	public GameHistory(String fileName)
+			throws FileNotFoundException, IOException {
 		this();
 
 		Scanner reader = new Scanner(new File(fileName));
@@ -36,26 +38,26 @@ public class GameHistory {
 		}
 	}
 
+	// after performing a move, add it to the history
 	public void add(Move move) {
 		++this.moveCount;
 		this.logList.add(move);
 	}
 
+	// true if no moves are logged
 	public boolean isEmpty() {
 		return this.logList.isEmpty();
 	}
 
-	public Move getMove(int index) throws IndexOutOfBoundsException {
-		return this.logList.get(index);
-	}
-
+	// saves moves to file
 	public void log() throws IOException {
-		String fileName = new Date() + ".log";
+		String fileName
+			= String.join("_", new Date().toString().split(" ")) + ".log";
 		FileWriter writer = new FileWriter(fileName);
 
 		int moveC = 1;
 		for (Move m : this.logList) {
-			writer.write(moveC + m.toString());
+			writer.write(moveC + ". " + m + "\n");
 			moveC++;
 		}
 		writer.close();

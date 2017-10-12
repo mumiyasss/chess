@@ -27,26 +27,22 @@ public class InputHandler {
 		return new Move(from, to);
 	}
 
-	// gets a line and takes only ([a-hA-H][1-8]){2}
+	// gets a line and takes only ([a-hA-H][1-8]){2} (like "a1b2" or "C3 F4")
 	private static char[] parse(String line) throws IOException {
 		char[] parsedStr = new char[4];
 		int it = 0;
 
 		int i = 0;
 		try {
-			for (int c = 0; c < 2; c++) {
-				while (!isFile(line.charAt(i))) {
-					++i;
-				}
+			for (int positionCount = 0; positionCount < 2; positionCount++) {
+				for (; !isFile(line.charAt(i)); i++);
 				parsedStr[it++] = line.charAt(i);
 	
-				while (!isRank(line.charAt(i))) {
-					++i;
-				}
+				for (; !isRank(line.charAt(i)); i++);
 				parsedStr[it++] = line.charAt(i);
 			}
 		} catch (java.lang.StringIndexOutOfBoundsException e) {
-			throw new IOException("Invalid input.");
+			throw new IOException("Incomplete input.");
 		}
 
 		if (it < 4) {

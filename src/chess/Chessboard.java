@@ -8,7 +8,7 @@ public class Chessboard {
  	protected static int gameMoveNumber = 1; // Номер хода  
 	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
 	/*
-	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
+	 * USE ONLY SQUARE CLASS TO ACCES THE CHESSBOARD
 	 */
 	protected Piece[][] board; // package default
 
@@ -60,6 +60,7 @@ public class Chessboard {
 
 	// LOAD CHESSBOARD TO CONTINUE THE GAME
 	public void setup(GameHistory history) {
+		this.setup();
 		for (Move m : history.logList) {
 			try {
 				this.move(m);
@@ -101,7 +102,7 @@ public class Chessboard {
 		// TODO Создать функцию обработчик (вынести все это)	
 		System.out.println(move.FROM.rank);
 		// Ходит ли нужный цвет?
-		if (gameMoveNumber % 2 != this_piece.get_color().toInt()) {
+		if (gameMoveNumber % 2 != this_piece.get_color().toInt()) { // WARNING I HAVE CHANGED IT HERE
 			System.out.println("ILLEGAL-1");
 			// System.out.println(gameMoveNumber);
 			// System.out.println(gameMoveNumber % 2);
@@ -131,6 +132,7 @@ public class Chessboard {
 			
 			System.out.println(this_piece);
 			System.out.println("ILLEGAL-3"); // TODO change to exception or smth
+			// 
 
 		}
 
@@ -180,7 +182,4 @@ public class Chessboard {
 
 		return builder.toString();
 	}
-
-
-	// TODO isLegalMove(); or think about it
 }
