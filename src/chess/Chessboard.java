@@ -107,7 +107,7 @@ public class Chessboard {
 			// System.out.println(gameMoveNumber);
 			// System.out.println(gameMoveNumber % 2);
 			// System.out.println(this_piece.get_color());
-			throw new IllegalMoveException("Piece " + this_piece + " is not yours.");
+			throw new IllegalMoveException("Piece " + this_piece + " at " + this_piece_position + " is not yours.");
 		} else 
 		// Если что-то стоит на клетке
 		if (aimSquare != null) {

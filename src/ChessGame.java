@@ -32,12 +32,11 @@ public class ChessGame {
 			board.setup();
 		}
 
+		System.out.println("_______CHESS_______");
+		
+		System.out.println(board);
+		
 		while (true) {
-			InputHandler.clearScreen();
-
-			System.out.println("_______CHESS_______");
-			System.out.println(board);
-			
 			// Считывание пользовательского ввода 
 			String query = scanner.nextLine().trim();
 
@@ -46,8 +45,7 @@ public class ChessGame {
 				continue;
 			}
 
-			// Выход из приложения при нажатии на '/' << or /exit
-			// TODO
+			// Выход из приложения при нажатии /exit
 			if (query.charAt(0) == '/') {
 				String[] argsLine = query.split(" ");
 				switch (argsLine[0]) {
@@ -59,7 +57,8 @@ public class ChessGame {
 						break;
 
 					default:
-						throw new IOException("Invalid command.");
+						System.out.println("Invalid command: " + query);
+						continue;
 				}
 			}
 
@@ -70,7 +69,12 @@ public class ChessGame {
 				history.add(move);
 			} catch (Exception e) {
 				System.out.println("Error: " + e);
+				continue;
 			}
+
+			InputHandler.clearScreen();
+			System.out.println("_______CHESS_______");
+			System.out.println(board);
 
 		} // EOF WHILE TRUE 
 	} // EOF RUN
