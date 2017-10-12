@@ -111,7 +111,6 @@ public class Chessboard {
 		if (moveStatus == GameCode.OK) { // TODO преобразовать в swith/case?
 			this.set(this.get(move.get_from_square()), aim_position);
 			this.remove(this_piece_position);	 // ISSUE не будет работать рокировка
-		
 		} else
 		if (moveStatus == GameCode.ILLEGAL_1) {
                     throw new IllegalMoveException("Piece " + this_piece + " at " 
@@ -121,8 +120,9 @@ public class Chessboard {
 			throw new IllegalMoveException(this_piece + "cannot chop " + aim_position);
 		} else 
 		if (moveStatus == GameCode.ILLEGAL_3) {
-			
+			throw new IllegalMoveException(this_piece + "cannot move to " + aim_position);
 		}
+
 
 	}
 

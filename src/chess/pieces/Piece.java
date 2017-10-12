@@ -6,6 +6,7 @@ abstract public class Piece {
 	protected Color color;
 
 	abstract public boolean isLegalMove(Move move, boolean chopping);  
+	//abstract public Square[] path(Move move);
 
 	public String toString() {
 		return Character.toString(icon);
@@ -14,6 +15,8 @@ abstract public class Piece {
 	public Color get_color() {
 		return color;
 	}
+
+
 }
 
 
