@@ -3,13 +3,15 @@ package chess;
 import chess.pieces.*;
 
 public class Chessboard {
-
-	protected static final int BOARD_SIZE = 8;
- 	protected static int gameMoveNumber = 1; // Номер хода  
 	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES THE CHESSBOARD
 	 */
+
+	protected static final int BOARD_SIZE = 8;
+ 	protected static Controller controller; 
+
+ 	
 	protected Piece[][] board; // package default
 
 	final static char[] files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
@@ -19,6 +21,7 @@ public class Chessboard {
 	
 	public Chessboard() {
 		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
+		controller = new Controller(); // Инициализация контроллера 
 	}
 
 	public void setup() {
@@ -91,49 +94,34 @@ public class Chessboard {
 	// perform a move
 	public void move(Move move) throws IllegalMoveException {
 		Square this_piece_position = move.get_from_square();
-		Square aim_position = move.get_to_square();
+		Square aim_position = move.get_to_square();		
 
 		Piece this_piece = 
-			this.board[this_piece_position.rank][this_piece_position.file];
+			board[this_piece_position.rank][this_piece_position.file];
 		
 		Piece aimSquare = 
-			this.board[aim_position.rank][aim_position.file];
+			board[aim_position.rank][aim_position.file];
 
-		// TODO Создать функцию обработчик (вынести все это)	
-		System.out.println(move.FROM.rank);
-		// Ходит ли нужный цвет?
-		if (gameMoveNumber % 2 != this_piece.get_color().toInt()) { // WARNING I HAVE CHANGED IT HERE
-			System.out.println("ILLEGAL-1");
-			// System.out.println(gameMoveNumber);
-			// System.out.println(gameMoveNumber % 2);
-			// System.out.println(this_piece.get_color());
-			throw new IllegalMoveException("Piece " + this_piece + " at " + this_piece_position + " is not yours.");
-		} else 
-		// Если что-то стоит на клетке
-		if (aimSquare != null) {
-			Piece aimPiece = aimSquare; // Значит это уже не просто клетка, а фигура
-			// Проверяем, того же ли цвета фигура на новой клетке(своих рубить нельзя) 
-			if ((gameMoveNumber % 2 == 1 && aimPiece.get_color() == Color.WHITE) ||
-				(gameMoveNumber % 2 == 0 && aimPiece.get_color() == Color.BLACK)) {
-				throw new IllegalMoveException(this_piece + "cannot chop " + aim_position);
-			} else {
-				// Будем рубить!
-				// Заменить true/false // !!! ЗАЧЕМ УСЛОЖНЯТЬ? ПРОСТО ХОДИ ЕСЛИ НЕТ СОЮЗНЙОЙ ФИГУРЫ
-				if (this_piece.isLegalMove(move, true)) {}
-			}
-		} else
-		// Может ли так ходить фигура?
-		if(this_piece.isLegalMove(move, false)) { 
+
+		GameCode moveStatus;
+		moveStatus = controller.check_move(move, board, this_piece, aimSquare);
+
+		
+                
+		if (moveStatus == GameCode.OK) { // TODO преобразовать в swith/case?
 			this.set(this.get(move.get_from_square()), aim_position);
 			this.remove(this_piece_position);	 // ISSUE не будет работать рокировка
-			gameMoveNumber++; // Следующий ход
-
-		} else {
+		
+		} else
+		if (moveStatus == GameCode.ILLEGAL_1) {
+                    throw new IllegalMoveException("Piece " + this_piece + " at " 
+                        + this_piece_position + " is not yours.");
+		} else 
+		if (moveStatus == GameCode.ILLEGAL_2) {
+			throw new IllegalMoveException(this_piece + "cannot chop " + aim_position);
+		} else 
+		if (moveStatus == GameCode.ILLEGAL_3) {
 			
-			System.out.println(this_piece);
-			System.out.println("ILLEGAL-3"); // TODO change to exception or smth
-			// 
-
 		}
 
 	}
