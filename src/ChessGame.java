@@ -3,13 +3,15 @@ import java.util.Scanner;
 
 // import chess.pieces.*;.
 
+import java.io.IOException;
+
 import chess.Chessboard; // DO WE REALLY NEED SMTH BUT CHESSBOARD HERE?
 import chess.GameHistory;
-import input.InputHandler;
+import chess.InputHandler;
+import chess.Move;
 
 public class ChessGame {
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws IOException {
 		if (args.length > 0) {
 			run(new Chessboard(), new GameHistory(args[0]));
 		} else {
@@ -19,7 +21,7 @@ public class ChessGame {
 	}
 
 	// Runs the game
-	static void run(Chessboard board, GameHistory history) {
+	static void run(Chessboard board, GameHistory history) throws IOException {
 		// just demo
 
 		Scanner scanner = new Scanner(System.in);
@@ -53,7 +55,7 @@ public class ChessGame {
 						return;
 
 					case "/save":
-						history.log(...);
+						history.log();
 						break;
 
 					default:

@@ -2,8 +2,6 @@
 
 package chess;
 
-import chess.InputHandler;
-
 import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,17 +17,17 @@ import java.util.Date;
  * GameHistory
  */
 public class GameHistory {
-	ArrayList<Move> log; // PACKAGE DEFAULT
+	ArrayList<Move> logList; // PACKAGE DEFAULT
 	private int moveCount;
 
 	// creates empty history
 	public GameHistory() {
 		moveCount = 0;
-		log = new ArrayList<Move>();
+		logList = new ArrayList<Move>();
 	}
 
 	// copies history from file
-	public GameHistory(String fileName) throws FileNotFoundException {
+	public GameHistory(String fileName) throws FileNotFoundException, IOException {
 		this();
 
 		Scanner reader = new Scanner(new File(fileName));
@@ -40,23 +38,23 @@ public class GameHistory {
 
 	public void add(Move move) {
 		++this.moveCount;
-		this.log.add(move);
+		this.logList.add(move);
 	}
 
 	public boolean isEmpty() {
-		return this.log.isEmpty();
+		return this.logList.isEmpty();
 	}
 
 	public Move getMove(int index) throws IndexOutOfBoundsException {
-		return InputHandler.getNextMove(this.log.get(index));
+		return this.logList.get(index);
 	}
 
-	public void log() {
+	public void log() throws IOException {
 		String fileName = new Date() + ".log";
 		FileWriter writer = new FileWriter(fileName);
 
 		int moveC = 1;
-		for (Move m : this.log) {
+		for (Move m : this.logList) {
 			writer.write(moveC + m.toString());
 			moveC++;
 		}

@@ -60,8 +60,12 @@ public class Chessboard {
 
 	// LOAD CHESSBOARD TO CONTINUE THE GAME
 	public void setup(GameHistory history) {
-		for (Move m : history.log) {
-			this.move(m);
+		for (Move m : history.logList) {
+			try {
+				this.move(m);
+			} catch (IllegalMoveException e) {
+				System.out.println(e + "History is corrupted.");
+			}
 		}
 	}
 
@@ -84,7 +88,7 @@ public class Chessboard {
 
 
 	// perform a move
-	public void move(Move move) throws Exception {
+	public void move(Move move) throws IllegalMoveException {
 		Square this_piece_position = move.get_from_square();
 		Square aim_position = move.get_to_square();
 
@@ -96,13 +100,13 @@ public class Chessboard {
 
 		// TODO Создать функцию обработчик (вынести все это)	
 		System.out.println(move.FROM.rank);
-		 // Ходит ли нужный цвет?
-		if ((gameMoveNumber % 2 == 1 && this_piece.get_color() == Color.BLACK) ||
-			(gameMoveNumber % 2 == 0 && this_piece.get_color() == Color.WHITE)) {
-				System.out.println("ILLEGAL-1");
-				//System.out.println(gameMoveNumber);
-				//System.out.println(gameMoveNumber % 2);
-				//System.out.println(this_piece.get_color());
+		// Ходит ли нужный цвет?
+		if (gameMoveNumber % 2 != this_piece.get_color().toInt()) {
+			System.out.println("ILLEGAL-1");
+			// System.out.println(gameMoveNumber);
+			// System.out.println(gameMoveNumber % 2);
+			// System.out.println(this_piece.get_color());
+			throw new IllegalMoveException("Piece " + this_piece + " is not yours.");
 		} else 
 		// Если что-то стоит на клетке
 		if (aimSquare != null) {
@@ -110,12 +114,11 @@ public class Chessboard {
 			// Проверяем, того же ли цвета фигура на новой клетке(своих рубить нельзя) 
 			if ((gameMoveNumber % 2 == 1 && aimPiece.get_color() == Color.WHITE) ||
 				(gameMoveNumber % 2 == 0 && aimPiece.get_color() == Color.BLACK)) {
-				System.out.println("ILLEGAL-2");
-			} else
-			{
+				throw new IllegalMoveException(this_piece + "cannot chop " + aim_position);
+			} else {
 				// Будем рубить!
-				// Заменить true/false
-				if(this_piece.isLegalMove(move, true)) {}
+				// Заменить true/false // !!! ЗАЧЕМ УСЛОЖНЯТЬ? ПРОСТО ХОДИ ЕСЛИ НЕТ СОЮЗНЙОЙ ФИГУРЫ
+				if (this_piece.isLegalMove(move, true)) {}
 			}
 		} else
 		// Может ли так ходить фигура?
@@ -128,6 +131,7 @@ public class Chessboard {
 			
 			System.out.println(this_piece);
 			System.out.println("ILLEGAL-3"); // TODO change to exception or smth
+
 		}
 
 	}

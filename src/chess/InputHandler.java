@@ -1,5 +1,6 @@
 
-package input;
+
+package chess;
 
 import java.io.IOException;
 
@@ -26,22 +27,26 @@ public class InputHandler {
 		return new Move(from, to);
 	}
 
-	// gets a line and takes only ([a-hA-H]\d){2}
+	// gets a line and takes only ([a-hA-H][1-8]){2}
 	private static char[] parse(String line) throws IOException {
 		char[] parsedStr = new char[4];
 		int it = 0;
 
 		int i = 0;
-		for (int c = 0; c < 2; c++) {
-			while (!isFile(line.charAt(i))) {
-				++i;
+		try {
+			for (int c = 0; c < 2; c++) {
+				while (!isFile(line.charAt(i))) {
+					++i;
+				}
+				parsedStr[it++] = line.charAt(i);
+	
+				while (!isRank(line.charAt(i))) {
+					++i;
+				}
+				parsedStr[it++] = line.charAt(i);
 			}
-			parsedStr[it++] = line.charAt(i);
-
-			while (!isRank(line.charAt(i))) {
-				++i;
-			}
-			parsedStr[it++] = line.charAt(i);
+		} catch (java.lang.StringIndexOutOfBoundsException e) {
+			throw new IOException("Invalid input.");
 		}
 
 		if (it < 4) {
