@@ -11,8 +11,20 @@ public class Rook extends Piece {
 		}
 	}
 	public boolean isLegalMove(Move move, boolean chopping) {
+		int relativeRankFrom = move.FROM.rank;
+		int relativeRankTo = move.TO.rank;
+		int relativeFileFrom = move.FROM.file;     
+		int relativeFileTo = move.TO.file;
 
-		return true;
+		if (((Math.abs(relativeFileTo - relativeFileFrom) == 0) &&
+			 (Math.abs(relativeRankTo - relativeRankFrom) != 0)) 
+																||
+																
+			 ((Math.abs(relativeRankTo - relativeRankFrom) == 0) &&
+			 (Math.abs(relativeFileTo - relativeFileFrom) != 0)))
+				return true;
+
+		return false;
 	}
 
 }

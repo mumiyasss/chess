@@ -117,10 +117,10 @@ public class Chessboard {
                         + this_piece_position + " is not yours.");
 		} else 
 		if (moveStatus == GameCode.ILLEGAL_2) {
-			throw new IllegalMoveException(this_piece + "cannot chop " + aim_position);
+			throw new IllegalMoveException(this_piece + " cannot chop " + aim_position);
 		} else 
 		if (moveStatus == GameCode.ILLEGAL_3) {
-			throw new IllegalMoveException(this_piece + "cannot move to " + aim_position);
+			throw new IllegalMoveException(this_piece + " cannot move to " + aim_position);
 		}
 
 

@@ -10,8 +10,19 @@ public class King extends Piece {
 			this.icon = '♚';
 		}
 	}
-        @Override // Почему не обязательно?
+    
+    @Override // Почему не обязательно?
 	public boolean isLegalMove(Move move, boolean chopping) {
+		int relativeRankFrom = move.FROM.rank;
+		int relativeRankTo = move.TO.rank;
+		int relativeFileFrom = move.FROM.file;     
+		int relativeFileTo = move.TO.file;
+
+		if ((Math.abs(relativeFileTo - relativeFileFrom) > 1) ||
+			(Math.abs(relativeRankTo - relativeRankFrom) > 1)) {
+			return false;
+		}
+
 
 		return true;
 	}

@@ -11,7 +11,16 @@ public class Bishop extends Piece {
 		}
 	}
 	public boolean isLegalMove(Move move, boolean chopping) {
+		int relativeRankFrom = move.FROM.rank;
+		int relativeRankTo = move.TO.rank;
+		int relativeFileFrom = move.FROM.file;     
+		int relativeFileTo = move.TO.file;
 
+		if (Math.abs(relativeFileTo - relativeFileFrom) !=
+			Math.abs(relativeRankTo -  relativeRankFrom)) {
+			return false;
+		}
+		
 		return true;
 	}
 

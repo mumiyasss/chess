@@ -12,16 +12,19 @@ public class Pawn extends Piece {
 			this.icon = '♟';
 		}
 	}
-        /*
+  /*  
 	public Square[] path(Move move) {
 		int relativeRankFrom = move.FROM.rank;
-		int relativeRankTO = move.TO.rank;
+		int relativeRankTo = move.TO.rank;
 		int relativeFileFrom = move.FROM.file;     
 		int relativeFileTo = move.TO.file;
 
-		while() {}
+		while() {
+
+		}
 	}
-        */
+*/
+ 
 	// TODO or check Chessboard; think about it
 	@Override
         public boolean isLegalMove(Move move, boolean chopping) {
