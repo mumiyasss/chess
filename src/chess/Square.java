@@ -2,19 +2,23 @@
 
 package chess;
 
-// Клеточка
+// Square / Position / Cell
+// Pair of coordinates
 public class Square {
-	// TODO закоментировать этот класс
-	final public int RANK;
 	final public int FILE;
+	final public int RANK;
 
 	public Square(char file, int rank) {
-		this.RANK = rank - 1;
-
-		if (file >= 'a') { // UpperCase
-			file -= 32;
+		if (file >= 'a') {
+			file -= 32; // to UpperCase
 		}
-		this.FILE = file - 'A'; // Получение числа
+		this.FILE = file - 'A'; // to int
+
+		this.RANK = rank - 1;
+	}
+
+	public Color getColor() {
+		return (this.RANK + this.FILE) % 2 == 0 ? Color.WHITE : Color.BLACK;
 	}
 
 	public String draw() {

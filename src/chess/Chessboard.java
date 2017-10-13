@@ -3,13 +3,14 @@ import chess.pieces.*;
 
 public class Chessboard {
 
-	protected static final int BOARD_SIZE = 8;
- 	protected static int moveCount = 1; // Номер хода  
+	public static final int BOARD_SIZE = 8;
+ 	int moveCount = 1; // PACKAGE DEFAULT
 	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
+
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
 	 */
-	protected Piece[][] board; // package default
+	Piece[][] board; // package default
 
 	final static char[] files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 	final static  int[] ranks = {8, 7, 6, 5, 4, 3, 2, 1};
@@ -20,12 +21,11 @@ public class Chessboard {
 		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
 	}
 
+	// default chessboard setup
 	public void setup() {
-		/// Передаются кординаты в метод set()
-		
-		// Расставляем белые фигуры
-		for (char f : files) {
-			this.set(new Pawn(Color.WHITE), new Square(f, 2));
+		// white pieces
+		for (char file : files) {
+			this.set(new Pawn(Color.WHITE), new Square(file, 2));
 		}
 		this.set(new   King(Color.WHITE), new Square('E', 1));
 		this.set(new  Queen(Color.WHITE), new Square('D', 1));
@@ -33,12 +33,12 @@ public class Chessboard {
 		this.set(new Bishop(Color.WHITE), new Square('F', 1));
 		this.set(new Knight(Color.WHITE), new Square('B', 1));
 		this.set(new Knight(Color.WHITE), new Square('G', 1));
-		this.set(new   Rook(Color.WHITE), new Square('A', 1));
-		this.set(new   Rook(Color.WHITE), new Square('H', 1));
+		this.set(new Rook(Color.WHITE), new Square('A', 1));
+		this.set(new Rook(Color.WHITE), new Square('H', 1));
 				
-		// Расставляем чёрные фигуры
-		for (char f : files) {
-			this.set(new Pawn(Color.BLACK), new Square(f, 7));
+		// black pieces
+		for (char file : files) {
+			this.set(new Pawn(Color.BLACK), new Square(file, 7));
 		}
 		this.set(new   King(Color.BLACK), new Square('E', 8));
 		this.set(new  Queen(Color.BLACK), new Square('D', 8));
@@ -46,10 +46,21 @@ public class Chessboard {
 		this.set(new Bishop(Color.BLACK), new Square('F', 8));
 		this.set(new Knight(Color.BLACK), new Square('B', 8));
 		this.set(new Knight(Color.BLACK), new Square('G', 8));
-		this.set(new   Rook(Color.BLACK), new Square('A', 8));
-		this.set(new   Rook(Color.BLACK), new Square('H', 8));
+		this.set(new Rook(Color.BLACK), new Square('A', 8));
+		this.set(new Rook(Color.BLACK), new Square('H', 8));
 	}
 
+	// LOAD CHESSBOARD TO CONTINUE THE GAME
+	public void setup(GameHistory history) {
+		this.setup();
+		for (Move m : history.logList) {
+			try {
+				this.move(m);
+			} catch (IllegalMoveException e) {
+				System.out.println(e + "History is corrupted.");
+			}
+		}
+	}
 
 	// add a piece to board
 	public void set(Piece piece, Square position) {
@@ -63,35 +74,58 @@ public class Chessboard {
 
 	// removes Piece from the board on position
 	// Вместо фигурки ставит null
-	public void remove(Square position) {
+	public void removeFrom(Square position) {
 		this.board[position.RANK][position.FILE] = null;
 	}
 
 
 	// perform a move
-	public void move(Move move) throws Exception {
-
-		// TODO check if move is legal
-		Square currentPosition = move.SOURCE;
+	public void move(Move move) throws IllegalMoveException {
 		
-		Piece movingPiece = 
-			this.board[currentPosition.RANK][currentPosition.FILE];
-		// TODO Создать функцию обработчик (вынести все это)	
-		if((moveCount % 2 == 1 && movingPiece.get_color() == Color.BLACK) ||
-			(moveCount % 2 == 0 && movingPiece.get_color() == Color.WHITE)) {
-				System.out.println("ILLEGAL11111");
-				// !!! throw new IllegalMoveException(movingPiece + "cannot move like this");
-		} else if(!movingPiece.isLegalMove(move)) {
-			System.out.println(movingPiece);
-			System.out.println("ILLEGAL"); // TODO change to exception or smth
-			// !!! throw new IllegalMoveException(movingPiece + "cannot move like this");
-		} else {
-			this.set(this.get(move.SOURCE), move.DESTINATION);
-			this.remove(move.SOURCE);	
-			this.moveCount++; // Следующий ход
-		}
-	}
+		Square source		= move.SOURCE;
+		Square destination	= move.DESTINATION;
 
+		Piece movingPiece	= this.get(source);
+		Piece target		= this.get(destination);
+
+		if (movingPiece == null) {
+			throw new IllegalMoveException(
+				"there is no piece at " + source
+			);
+		}
+
+
+		// Can the player move this piece
+		if (this.moveCount % 2 != movingPiece.getColor().toInt()) {
+			// if not throw exc
+			throw new IllegalMoveException(
+				"Piece " + movingPiece + " at " + source + " is not yours."
+			);
+		}
+
+		// player tries to chop his own piece
+		if (target != null && movingPiece.getColor() == target.getColor()) {
+			// if true throw exc
+			throw new IllegalMoveException(
+				movingPiece + " cannot chop " + target
+				+ " as they are the same color."
+			);
+		}
+
+		// if could the piece even get there?
+		if (!movingPiece.isLegal(move, this)) {
+			// if not throw exc
+			throw new IllegalMoveException(
+				movingPiece + " at " + source
+				+ " cannot get to " + destination
+			);
+		}
+
+		// only if all conditions are satisfied
+		this.set(movingPiece, destination);
+		this.removeFrom(source);
+		this.moveCount++;
+	}
 
 	// returns pseudo graphical visualization
 	public String toString() {
@@ -136,7 +170,4 @@ public class Chessboard {
 
 		return builder.toString();
 	}
-
-
-	// TODO isLegalMove(); or think about it
 }
