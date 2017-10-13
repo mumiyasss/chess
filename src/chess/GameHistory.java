@@ -33,8 +33,15 @@ public class GameHistory {
 		this();
 
 		Scanner reader = new Scanner(new File(fileName));
+		
 		while (reader.hasNext()) {
-			this.add(InputHandler.getNextMove(reader.nextLine()));
+			String line = reader.nextLine().trim();
+			
+			if (line.indexOf("[") < line.lastIndexOf("]")) {
+				continue;
+			}
+			
+			this.add(InputHandler.getNextMove(line));
 		}
 	}
 
