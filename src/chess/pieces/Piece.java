@@ -17,5 +17,9 @@ abstract public class Piece {
 	public Color getColor() {
 		return color;
 	}
+
+	protected int sign(int x) {
+		return x == 0 ? 0 : (x < 0 ? -1 : 1);
+	}
 }
 

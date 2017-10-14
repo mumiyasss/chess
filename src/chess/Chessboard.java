@@ -1,4 +1,4 @@
-package chess;
+222package chess;
 import chess.pieces.*;
 
 public class Chessboard {
@@ -78,6 +78,10 @@ public class Chessboard {
 		this.board[position.RANK][position.FILE] = null;
 	}
 
+	public Piece get(int i, int j) {
+		return this.board[i][j];
+	}
+
 
 	// perform a move
 	public void move(Move move) throws IllegalMoveException {
@@ -93,7 +97,6 @@ public class Chessboard {
 				"there is no piece at " + source
 			);
 		}
-
 
 		// Can the player move this piece
 		if (this.moveCount % 2 != movingPiece.getColor().toInt()) {

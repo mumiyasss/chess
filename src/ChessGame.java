@@ -64,7 +64,7 @@ public class ChessGame {
 
 				history.add(move);
 			} catch (Exception e) {
-				System.out.println(e);
+				// System.out.println(e);
 				e.printStackTrace();
 				continue;
 			}

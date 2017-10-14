@@ -18,6 +18,20 @@ public class Queen extends Piece {
 
 	public boolean isLegal(Move move, Chessboard board) {
 
+		if (!Queen.isValid(move)) {
+			return false;
+		}
+
+		// TODO 
+
+		return true;
+	}
+
+	static boolean isValid(Move move) {
+		if (!Rook.isValid(move) && !Bishop.isValid(move)) {
+			return false;
+		}
+
 		return true;
 	}
 }

@@ -8,6 +8,12 @@ public class Square {
 	final public int FILE;
 	final public int RANK;
 
+	public Square(int file, int rank) {
+		this.FILE = file;
+		this.RANK = rank;
+	}
+
+
 	public Square(char file, int rank) {
 		if (file >= 'a') {
 			file -= 32; // to UpperCase
