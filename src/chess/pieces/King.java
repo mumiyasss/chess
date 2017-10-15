@@ -23,6 +23,7 @@ public class King extends Piece {
 		}
 
 		// TODO
+		// Check check occurs in Chessboard class
 
 
 		return true;

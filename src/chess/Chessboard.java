@@ -23,8 +23,6 @@ public class Chessboard {
 
 	// default chessboard setup
 	public void setup() {
-
-
 		// white pieces
 		for (char file : files) {
 			this.set(new Pawn(Color.WHITE), new Square(file, 2));
@@ -85,7 +83,7 @@ public class Chessboard {
 	}
 
 	// CANCEL LAST MOVE
-	private void cancelLastMove() throws Exception {
+	public void cancelLastMove() throws Exception {
 		Move cancellingMove = this.history.pop();
 		this.forceMove(cancellingMove);
 	}

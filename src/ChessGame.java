@@ -16,7 +16,6 @@ public class ChessGame {
 		} else {
 			run(new Chessboard(), new GameHistory());
 		}
-
 	}
 
 	// Runs the game
@@ -31,17 +30,16 @@ public class ChessGame {
 
 		System.out.println("_______CHESS_______");
 		System.out.println(board);
-		
-		mainLoop : while (true) {
-			// Считывание пользовательского ввода 
+
+		while (true) {
 			String query = scanner.nextLine().trim();
 
-			// Проверка на пустую строку при вводе
+			// check if input is an empty line and skip if true
 			if (query.isEmpty()) {
 				continue;
 			}
 
-			// Выход из приложения при нажатии /exit
+			// if input is a command
 			if (query.charAt(0) == '/') {
 				String[] argsLine = query.split(" ");
 				switch (argsLine[0]) {
@@ -50,29 +48,32 @@ public class ChessGame {
 
 					case "/save":
 						history.log();
-						continue mainLoop;
+						break;
+
+					case "/cancel":
+						history.cancelLastMove();
+						break;
 
 					default:
 						System.out.println("Invalid command: " + query);
-						continue;
 				}
-			}
-
-			try {
-				Move move = InputHandler.getNextMove(query);
-				board.move(move);
-
-				history.add(move);
-			} catch (Exception e) {
-				// System.out.println(e);
-				e.printStackTrace();
-				continue;
+			} else {
+				// move input handler
+				try {
+					Move move = InputHandler.getNextMove(query);
+					board.move(move);
+	
+					history.add(move);
+				} catch (Exception e) {
+					// System.out.println(e);
+					e.printStackTrace();
+					continue;
+				}
 			}
 
 			InputHandler.clearScreen();
 			System.out.println("_______CHESS_______");
 			System.out.println(board);
-
-		} // EOF WHILE TRUE 
-	} // EOF RUN
+		}
+	} // END OF RUN()
 }

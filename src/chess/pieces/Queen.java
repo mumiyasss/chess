@@ -17,19 +17,19 @@ public class Queen extends Piece {
 	}
 
 	public boolean isLegal(Move move, Chessboard board) {
+		int dFile = move.DESTINATION.FILE - move.SOURCE.FILE;
+		int dRank = move.DESTINATION.RANK - move.SOURCE.RANK;
 
-		if (!Queen.isValid(move)) {
-			return false;
-		}
-
-		// TODO 
-
-		return true;
-	}
-
-	static boolean isValid(Move move) {
-		if (!Rook.isValid(move) && !Bishop.isValid(move)) {
-			return false;
+		// this means that Queen moves like a Rook
+		if (dFile == 0 || dRank == 0) {
+			if (!new Rook().isLegal(move)) {
+				return false;
+			}
+		} else {
+			// this means that Queen moves like a Bishop
+			if (!new Bishop().isLegal(move)) {
+				return false;
+			}
 		}
 
 		return true;
