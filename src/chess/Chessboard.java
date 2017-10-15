@@ -34,6 +34,9 @@ public class Chessboard {
 				this.remove(new Square(f, r));
 			}
 		}
+		// BUT there are nulls already?...
+
+
 		// Теперь расставляем белые фигуры
 		for (char f : files) {
 			this.set(new Pawn(Color.WHITE), new Square(f, 2));
@@ -91,6 +94,13 @@ public class Chessboard {
 		this.board[position.rank][position.file] = null;
 	}
 
+	// CANCEL LAST MOVE
+	private void cancelLastMove() throws Exception {
+		Move cancellingMove = this.history.pop(); // EXCEPTION HERE
+		// TODO Idk where to decrease moveCount
+		this.move(cancellingMove);
+	}
+
 
 	// perform a move
 	public void move(Move move) throws IllegalMoveException {
@@ -108,7 +118,6 @@ public class Chessboard {
 		moveStatus = controller.check_move(move, board, this_piece, aimSquare);
 
 		
-                
 		if (moveStatus == GameCode.OK) { // TODO преобразовать в swith/case?
 			this.set(this.get(move.get_from_square()), aim_position);
 			this.remove(this_piece_position);	 // ISSUE не будет работать рокировка
