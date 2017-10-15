@@ -89,9 +89,39 @@ public class Chessboard {
 	}
 
 
+	public boolean isAttackedBy(Color player, Square sqr) {
+
+		int file = sqr.FILE;
+		int rank = sqr.RANK;
+
+		if (this.get(file + 1, rank + 2) instanceof Knight && this.get(file + 1, rank + 2).getColor() == player
+				|| this.get(file + 1, rank - 2) instanceof Knight && this.get(file + 1, rank - 2).getColor() == player
+				|| this.get(file - 1, rank + 2) instanceof Knight && this.get(file - 1, rank + 2).getColor() == player
+				|| this.get(file - 1, rank - 2) instanceof Knight && this.get(file - 1, rank - 2).getColor() == player
+				|| this.get(file + 2, rank + 1) instanceof Knight && this.get(file + 2, rank + 1).getColor() == player
+				|| this.get(file + 2, rank - 1) instanceof Knight && this.get(file + 2, rank - 1).getColor() == player
+				|| this.get(file - 2, rank + 1) instanceof Knight && this.get(file - 2, rank + 1).getColor() == player
+				|| this.get(file - 2, rank - 1) instanceof Knight && this.get(file - 2, rank - 1).getColor() == player
+		) {
+			return true;
+		}
+
+		int attackedByPawnRank = player.toBool() ? -1 : 1;
+		try {
+			if (this.get(file + 1, rank + attackedByPawnRank) instanceof Pawn && this.get(file + 1, rank + attackedByPawnRank).getColor() == player
+					|| this.get(file - 1, rank + attackedByPawnRank) instanceof Pawn && this.get(file + 1, rank + attackedByPawnRank).getColor() == player) {
+				return true;
+			}
+		} catch (Exceptino e) {}
+
+		// TODO
+
+		return false;
+	}
+		
+
 	// perform a move with respect to ALL RULES
 	public void move(Move move) throws IllegalMoveException {
-		
 		Square source		= move.SOURCE;
 		Square destination	= move.DESTINATION;
 

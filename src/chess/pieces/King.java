@@ -21,11 +21,7 @@ public class King extends Piece {
 		if (!King.isValid(move)) {
 			return false;
 		}
-
-		// TODO
 		// Check check occurs in Chessboard class
-
-
 		return true;
 	}
 
