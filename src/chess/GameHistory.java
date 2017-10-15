@@ -17,7 +17,7 @@ import java.util.Date;
  * GameHistory
  */
 public class GameHistory {
-	ArrayList<Move> logList; // PACKAGE DEFAULT
+	public ArrayList<Move> logList; // PACKAGE DEFAULT
 
 	// creates empty history
 	public GameHistory() {

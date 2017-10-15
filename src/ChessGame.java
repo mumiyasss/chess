@@ -23,8 +23,6 @@ public class ChessGame {
 
 	// Runs the game
 	static void run(Chessboard board, GameHistory history) throws IOException {
-		// just demo
-
 		Scanner scanner = new Scanner(System.in);
 
 		if (!history.isEmpty()) {
@@ -34,10 +32,9 @@ public class ChessGame {
 		}
 
 		System.out.println("_______CHESS_______");
-		
 		System.out.println(board);
 		
-		while (true) {
+		mainloop : while (true) {
 			// Считывание пользовательского ввода 
 			String query = scanner.nextLine().trim();
 
@@ -45,30 +42,31 @@ public class ChessGame {
 			if (query.isEmpty()) {
 				continue;
 			}
+			try {
 
 			// Выход из приложения при нажатии /exit
-			if (query.charAt(0) == '/') {
-				String[] argsLine = query.split(" ");
-				switch (argsLine[0]) {
-					case "/exit":
-						return;
+				if (query.charAt(0) == '/') {
+					String[] argsLine = query.split(" ");
+					switch (argsLine[0]) {
+						case "/exit":
+							return;
 
-					case "/save":
-						history.log();
-						break;
+						case "/save":
+							history.log();
+							continue mainloop;
 
-					default:
-						System.out.println("Invalid command: " + query);
-						continue;
+						case "/cancel":
+							board.cancelLastMove();
+							continue mainloop;
+
+						default:
+							System.out.println("Invalid command: " + query);
+					}
 				}
-			}
 
-			try {
 				Move move = InputHandler.getNextMove(query);
 				board.move(move);
-
-				history.add(move);
-			} catch (IllegalMoveException e) {
+			} catch (Exception e) {
 				System.out.println("Error: " + e);
 				continue;
 			}

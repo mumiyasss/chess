@@ -71,8 +71,8 @@ public class Chessboard {
 
     // LOAD CHESSBOARD TO CONTINUE THE GAME
     public void setup(GameHistory history) {
-        this.history = history;
         this.setup();
+        this.history = history;
         for (Move m : this.history.logList) {
             try {
                 this.move(m);
@@ -100,10 +100,12 @@ public class Chessboard {
     }
 
     // CANCEL LAST MOVE
-    private void cancelLastMove() throws Exception {
+    public void cancelLastMove() throws Exception {
         Move cancellingMove = this.history.pop(); // EXCEPTION HERE
         // TODO Idk where to decrease moveCount
-        this.move(cancellingMove);
+        this.set(this.get(cancellingMove.FROM), cancellingMove.TO);
+        this.remove(cancellingMove.FROM);
+        this.gameMoveNumber -= 1;
     }
 
 
@@ -159,6 +161,7 @@ public class Chessboard {
             case OK:
                 this.set(this.get(move.get_from_square()), aim_position);
                 this.remove(this_piece_position);    // ISSUE не будет работать рокировка
+                this.history.add(move);
                 gameMoveNumber++; // делаем следующий ход
                 break;
             case ILLEGAL_1:
