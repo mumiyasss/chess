@@ -58,7 +58,7 @@ public class GameHistory {
 			throw new Exception("There is no move to cancel.");
 		}
 		Move canceledMove = this.logList.remove(this.logList.size() - 1);
-		Move inversedMove = new Move(canceledMove.DESTINATION, canceledMove.SOURCE);
+		Move inversedMove = new Move(canceledMove.TO, canceledMove.FROM);
 		return inversedMove;
 	}
 

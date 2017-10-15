@@ -14,6 +14,8 @@ public class Chessboard {
     protected static Controller check_system_controller;
     protected static int gameMoveNumber; // Номер хода
 
+    private GameHistory history;
+
 
     
     protected Piece[][] board; // package default
@@ -27,6 +29,7 @@ public class Chessboard {
         this.board = new Piece[RANK_SIZE][FILE_SIZE];
         controller = new Controller(); // Инициализация контроллера 
         gameMoveNumber = 1;
+        history = new GameHistory();
     }
 
     public void setup() {
@@ -68,8 +71,9 @@ public class Chessboard {
 
     // LOAD CHESSBOARD TO CONTINUE THE GAME
     public void setup(GameHistory history) {
+        this.history = history;
         this.setup();
-        for (Move m : history.logList) {
+        for (Move m : this.history.logList) {
             try {
                 this.move(m);
             } catch (IllegalMoveException e) {
