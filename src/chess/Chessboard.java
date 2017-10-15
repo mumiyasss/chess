@@ -1,12 +1,12 @@
-222package chess;
+package chess;
 import chess.pieces.*;
 
 public class Chessboard {
 
 	public static final int BOARD_SIZE = 8;
- 	int moveCount = 1; // PACKAGE DEFAULT
+ 	// int moveCount = 1; // PACKAGE DEFAULT
 	// String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
-
+	private GameHistory history;
 	/*
 	 * USE ONLY SQUARE CLASS TO ACCES TO CHESSBOARD
 	 */
@@ -16,13 +16,15 @@ public class Chessboard {
 	final static  int[] ranks = {8, 7, 6, 5, 4, 3, 2, 1};
 
 
-	
 	public Chessboard() {
 		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
+		this.history = new GameHistory();
 	}
 
 	// default chessboard setup
 	public void setup() {
+
+
 		// white pieces
 		for (char file : files) {
 			this.set(new Pawn(Color.WHITE), new Square(file, 2));
@@ -33,9 +35,9 @@ public class Chessboard {
 		this.set(new Bishop(Color.WHITE), new Square('F', 1));
 		this.set(new Knight(Color.WHITE), new Square('B', 1));
 		this.set(new Knight(Color.WHITE), new Square('G', 1));
-		this.set(new Rook(Color.WHITE), new Square('A', 1));
-		this.set(new Rook(Color.WHITE), new Square('H', 1));
-				
+		this.set(new   Rook(Color.WHITE), new Square('A', 1));
+		this.set(new   Rook(Color.WHITE), new Square('H', 1));
+
 		// black pieces
 		for (char file : files) {
 			this.set(new Pawn(Color.BLACK), new Square(file, 7));
@@ -46,19 +48,20 @@ public class Chessboard {
 		this.set(new Bishop(Color.BLACK), new Square('F', 8));
 		this.set(new Knight(Color.BLACK), new Square('B', 8));
 		this.set(new Knight(Color.BLACK), new Square('G', 8));
-		this.set(new Rook(Color.BLACK), new Square('A', 8));
-		this.set(new Rook(Color.BLACK), new Square('H', 8));
+		this.set(new   Rook(Color.BLACK), new Square('A', 8));
+		this.set(new   Rook(Color.BLACK), new Square('H', 8));
 	}
 
 	// LOAD CHESSBOARD TO CONTINUE THE GAME
 	public void setup(GameHistory history) {
 		this.setup();
-		for (Move m : history.logList) {
-			try {
+		this.history = history;
+		try {
+			for (Move m : this.history.logList) {
 				this.move(m);
-			} catch (IllegalMoveException e) {
-				System.out.println(e + "History is corrupted.");
 			}
+		} catch (IllegalMoveException e) {
+			System.out.println(e + "History is corrupted.");
 		}
 	}
 
@@ -73,7 +76,6 @@ public class Chessboard {
 	}
 
 	// removes Piece from the board on position
-	// Вместо фигурки ставит null
 	public void removeFrom(Square position) {
 		this.board[position.RANK][position.FILE] = null;
 	}
@@ -82,8 +84,14 @@ public class Chessboard {
 		return this.board[i][j];
 	}
 
+	// CANCEL LAST MOVE
+	private void cancelLastMove() throws Exception {
+		Move cancellingMove = this.history.pop();
+		this.forceMove(cancellingMove);
+	}
 
-	// perform a move
+
+	// perform a move with respect to ALL RULES
 	public void move(Move move) throws IllegalMoveException {
 		
 		Square source		= move.SOURCE;
@@ -99,7 +107,7 @@ public class Chessboard {
 		}
 
 		// Can the player move this piece
-		if (this.moveCount % 2 != movingPiece.getColor().toInt()) {
+		if (this.history.moveCount() % 2 != movingPiece.getColor().toInt()) {
 			// if not throw exc
 			throw new IllegalMoveException(
 				"Piece " + movingPiece + " at " + source + " is not yours."
@@ -125,9 +133,14 @@ public class Chessboard {
 		}
 
 		// only if all conditions are satisfied
-		this.set(movingPiece, destination);
-		this.removeFrom(source);
-		this.moveCount++;
+		this.forceMove(move);
+	}
+
+	
+	private void forceMove(Move move) {
+		this.set(this.get(move.DESTINATION), move.DESTINATION);
+		this.removeFrom(move.SOURCE);
+		this.history.add(move);
 	}
 
 	// returns pseudo graphical visualization

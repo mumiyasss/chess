@@ -6,14 +6,14 @@ package chess;
  * IllegalMoveException
  */
 public class IllegalMoveException extends Exception {
-    String errorMessage;
+	String errorMessage;
 
-    public IllegalMoveException(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+	public IllegalMoveException(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 
-    public String toString() {
-        return "IllegalMoveException: " + errorMessage;
-    }
+	public String toString() {
+		return "IllegalMoveException: " + errorMessage;
+	}
 }
 
