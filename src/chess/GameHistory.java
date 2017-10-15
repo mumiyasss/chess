@@ -18,11 +18,9 @@ import java.util.Date;
  */
 public class GameHistory {
 	ArrayList<Move> logList; // PACKAGE DEFAULT
-	private int moveCount;
 
 	// creates empty history
 	public GameHistory() {
-		moveCount = 0;
 		logList = new ArrayList<Move>();
 	}
 
@@ -47,8 +45,21 @@ public class GameHistory {
 
 	// after performing a move, add it to the history
 	public void add(Move move) {
-		++this.moveCount;
 		this.logList.add(move);
+	}
+
+	public int moveCount() {
+		return this.logList.size();
+	}
+
+	// DELETE THE LAST MOVE FROM HISTORY
+	public Move pop() throws Exception {
+		if (this.logList.size() == 0) {
+			throw new Exception("There is no move to cancel.");
+		}
+		Move canceledMove = this.logList.remove(this.logList.size() - 1);
+		Move inversedMove = new Move(canceledMove.DESTINATION, canceledMove.SOURCE);
+		return inversedMove;
 	}
 
 	// true if no moves are logged

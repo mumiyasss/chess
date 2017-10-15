@@ -95,6 +95,14 @@ public class Chessboard {
         return this.board[position.rank][position.file];
     }
 
+    // CANCEL LAST MOVE
+    private void cancelLastMove() throws Exception {
+        Move cancellingMove = this.history.pop(); // EXCEPTION HERE
+        // TODO Idk where to decrease moveCount
+        this.move(cancellingMove);
+    }
+
+
     /*
     public Piece[][] clone_board(Piece [][] original_board) {
         Piece [][]clonedBoard = ;
@@ -169,6 +177,7 @@ public class Chessboard {
             gameMoveNumber++; // делаем следующий ход
         } else
         if (moveStatus == GameCode.ILLEGAL_1) {
+
                     throw new IllegalMoveException("Piece " + this_piece + " at " 
                         + this_piece_position + " is not yours.");
         } else 
