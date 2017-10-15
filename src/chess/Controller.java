@@ -19,7 +19,7 @@ public class Controller {
 		//Square this_piece_position = move.get_from_square(); // Дубляж объявления
 		//Square aim_position = move.get_to_square();
 
-
+		boolean chopping = false;
 		// Ходит ли нужный цвет?
 		if (gameMoveNumber % 2 != this_piece.get_color().toInt()) {          
 			return GameCode.ILLEGAL_1;
@@ -33,22 +33,24 @@ public class Controller {
 				return GameCode.ILLEGAL_2;
 			} else {
 				// Будем рубить!
-				if (this_piece.isLegalMove(move, true)) {
-					gameMoveNumber++; // Следующий ход
-					return GameCode.OK;
-				} else return GameCode.ILLEGAL_2;
+				chopping = true;
+				
 			}
-		} else
+		} 
+
 		// Может ли так ходить фигура?
-		if(this_piece.isLegalMove(move, false)) { 
+		if(this_piece.isLegalMove(move, chopping)) { 
+
+			// Проверка на барьер
 			for(Square step : this_piece.path(move)) {
 				if (board[step.rank][step.file] != null)
 					return GameCode.ILLEGAL_4;
 			}
+
 			gameMoveNumber++; // Следующий ход
 			return GameCode.OK;
 		} else {
-			System.out.println(this_piece);
+			
 			return GameCode.ILLEGAL_3;
 		}
 
