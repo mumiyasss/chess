@@ -11,6 +11,12 @@ public class Knight extends Piece {
 		}
 	}
 
+	public Square[] path(Move move) {
+		Square[] pathArr = new Square[0];
+	
+		return pathArr;
+	}
+
 	@Override
 	public boolean isLegalMove(Move move, boolean chopping) {
 		int relativeRankFrom = move.FROM.rank;

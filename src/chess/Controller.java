@@ -41,6 +41,10 @@ public class Controller {
 		} else
 		// Может ли так ходить фигура?
 		if(this_piece.isLegalMove(move, false)) { 
+			for(Square step : this_piece.path(move)) {
+				if (board[step.rank][step.file] != null)
+					return GameCode.ILLEGAL_4;
+			}
 			gameMoveNumber++; // Следующий ход
 			return GameCode.OK;
 		} else {

@@ -8,7 +8,8 @@ public class Chessboard {
 	 * USE ONLY SQUARE CLASS TO ACCES THE CHESSBOARD
 	 */
 
-	protected static final int BOARD_SIZE = 8;
+	protected static final int RANK_SIZE = 8;
+	protected static final int FILE_SIZE = 8;
  	protected static Controller controller; 
 
  	
@@ -20,7 +21,7 @@ public class Chessboard {
 
 	
 	public Chessboard() {
-		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
+		this.board = new Piece[RANK_SIZE][FILE_SIZE];
 		controller = new Controller(); // Инициализация контроллера 
 	}
 
@@ -121,6 +122,10 @@ public class Chessboard {
 		} else 
 		if (moveStatus == GameCode.ILLEGAL_3) {
 			throw new IllegalMoveException(this_piece + " cannot move to " + aim_position);
+		} else
+		if (moveStatus == GameCode.ILLEGAL_4) {
+			throw new IllegalMoveException(this_piece + " cannot move to " + aim_position +
+				", because there is a barrier.");
 		}
 
 

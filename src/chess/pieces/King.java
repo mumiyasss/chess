@@ -10,6 +10,13 @@ public class King extends Piece {
 			this.icon = '♚';
 		}
 	}
+
+	public Square[] path(Move move) {
+		Square[] pathArr = new Square[0];
+		
+
+		return pathArr;
+	}
     
     @Override // Почему не обязательно?
 	public boolean isLegalMove(Move move, boolean chopping) {

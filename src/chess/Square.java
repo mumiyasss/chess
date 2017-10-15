@@ -16,6 +16,11 @@ public class Square {
 		this.file = file - 'A'; // Получение числа
 	}
 
+	public Square(int file, int rank) {
+		this.rank = rank;
+		this.file = file;
+	}
+
 	public String draw() {
 		return (this.rank + this.file) % 2 == 0 ? "■" : "□";
 	}
