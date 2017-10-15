@@ -7,13 +7,66 @@ import chess.pieces.*;
 
 
 public class Controller {
+	
+	/*
 	protected static int gameMoveNumber; // Номер хода
 
 	public Controller() {
 		gameMoveNumber = 1; // Объявляем начало игры, первый ход
 	}
+	*/
+	public Square find_this_color_king(Piece[][] board, int gameMoveNumber) {
+        Color thisColor = gameMoveNumber % 2 == 1 ? Color.WHITE : Color.BLACK;
+        Square king = null;
+        for(int rank = 0; rank < 8; rank++) {
+            for(int file = 0; file < 8; file++) {
+                if (board[rank][file] != null) {
+	                Piece p = board[rank][file];
+	                if(p.get_color() == thisColor && p.KING)
+	                    king = new Square(file, rank);
+            	}
+            }
+        }
+        return king;
+	}
 
-	public GameCode check_move(Move move, Piece[][] board,
+	public Square[] find_all_opposite_figures(Piece[][] board, int gameMoveNumber) {
+            Color oppositeColor = gameMoveNumber % 2 == 1 ? Color.BLACK : Color.WHITE;
+            int opFiguresQuantity = 0;
+            int figIterator = 0;
+            
+            for(int rank = 0; rank < 8; rank++) {
+                for(int file = 0; file < 8; file++) {
+                    if (board[rank][file] != null) {
+	                    Piece p = board[rank][file];
+	                    if(p.get_color() == oppositeColor)
+	                        opFiguresQuantity++;
+                	}
+                }
+            }
+            
+            Square []oppositeFigures = new Square[opFiguresQuantity];
+
+            for(int rank = 0; rank < 8; rank++) {
+                for(int file = 0; file < 8; file++) {
+                	if (board[rank][file] != null) {
+	                    Piece p = board[rank][file];
+	                    if(p.get_color() == oppositeColor) {
+	                        oppositeFigures[figIterator] = new Square(file, rank);
+	                        figIterator++;
+	                    }
+	                }
+                }
+            }
+            
+            return oppositeFigures;
+        }
+        
+
+            
+ 
+
+	public GameCode check_move(Move move, int gameMoveNumber, Piece[][] board,
                                         Piece this_piece, Piece aimSquare) {
 		
 		//Square this_piece_position = move.get_from_square(); // Дубляж объявления
@@ -50,7 +103,7 @@ public class Controller {
 			gameMoveNumber++; // Следующий ход
 			return GameCode.OK;
 		} else {
-			
+
 			return GameCode.ILLEGAL_3;
 		}
 

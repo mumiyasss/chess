@@ -2,6 +2,8 @@ package chess.pieces;
 import chess.*;
 
 public class King extends Piece {
+	final public boolean KING = true;
+
 	public King(Color color) {
 		this.icon = '♔';
 		this.color = color;

@@ -4,8 +4,9 @@ package chess;
 
 // Клеточка
 public class Square {
-	// TODO закоментировать этот класс
+	
 	final public int rank, file;
+	final public boolean KING = false;
 
 	public Square(char file, int rank) {
 		this.rank = rank - 1;

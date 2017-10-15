@@ -9,6 +9,7 @@ import chess.Chessboard; // DO WE REALLY NEED SMTH BUT CHESSBOARD HERE?
 import chess.GameHistory;
 import chess.InputHandler;
 import chess.Move;
+import chess.IllegalMoveException;
 
 public class ChessGame {
 	public static void main(String[] args) throws IOException {
@@ -67,7 +68,7 @@ public class ChessGame {
 				board.move(move);
 
 				history.add(move);
-			} catch (Exception e) {
+			} catch (IllegalMoveException e) {
 				System.out.println("Error: " + e);
 				continue;
 			}
