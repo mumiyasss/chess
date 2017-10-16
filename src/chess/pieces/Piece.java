@@ -4,7 +4,7 @@ import chess.*;
 abstract public class Piece {
 	protected char icon;
 	protected Color color;
-    final public boolean KING = true;
+        public boolean KING;
 
         
 	abstract public boolean isLegalMove(Move move, boolean chopping);  

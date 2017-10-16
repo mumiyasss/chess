@@ -13,6 +13,6 @@ public class IllegalMoveException extends Exception {
     }
 
     public String toString() {
-        return "IllegalMoveException: " + errorMessage;
+        return "Не правильный ход: " + errorMessage;
     }
 }

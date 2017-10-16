@@ -2,11 +2,12 @@ package chess.pieces;
 import chess.*;
 
 public class King extends Piece {
-	final public boolean KING = true;
+	
 
 	public King(Color color) {
 		this.icon = '♔';
 		this.color = color;
+                this.KING = true;
 
 		if (color == Color.WHITE) {
 			this.icon = '♚';
@@ -15,7 +16,6 @@ public class King extends Piece {
 
 	public Square[] path(Move move) {
 		Square[] pathArr = new Square[0];
-		
 
 		return pathArr;
 	}

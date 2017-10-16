@@ -126,9 +126,9 @@ public class Chessboard {
     }
 
 
-    /*
+    
     public Piece[][] clone_board(Piece [][] original_board) {
-        Piece [][]clonedBoard = ;
+        Piece [][]clonedBoard = new Piece[RANK_SIZE][FILE_SIZE];
         for(int i = 0; i < RANK_SIZE; i++) {
             for(int j = 0; j < FILE_SIZE; j++) {
                 if(original_board[i][j] == null)
@@ -136,26 +136,27 @@ public class Chessboard {
                 else clonedBoard[i][j] = original_board[i][j];
             }
         } 
-        return cloned_board;
+        return clonedBoard;
     }
-    */
+    
 
     public void save() throws IOException {
         this.history.log();
     }
 
     // perform a move
+    // THIS METHOD IS TOO BIG. IT SHOULD BE DIVIDED.
     public void move(Move move) throws IllegalMoveException {
-        Square this_piece_position = move.get_from_square();
-        Square aim_position = move.get_to_square();     
+        Square thisPiecePosition = move.get_from_square();
+        Square aimPosition = move.get_to_square();     
 
-        Piece this_piece = 
-            board[this_piece_position.rank][this_piece_position.file];
+        Piece thisPiece = 
+            board[thisPiecePosition.rank][thisPiecePosition.file];
         
         Piece aimSquare = 
-            board[aim_position.rank][aim_position.file];
+            board[aimPosition.rank][aimPosition.file];
 
-        Square thisColorKing = controller.find_this_color_king(this.board, 
+        Square thisColorKingPosition = controller.find_this_color_king(this.board, 
                                                                 this.gameMoveNumber);
 
         Square allOppositeFigures[] = controller.find_all_opposite_figures(this.board,
@@ -163,7 +164,7 @@ public class Chessboard {
 
         GameCode moveStatus;
         moveStatus = controller.check_move(move, this.gameMoveNumber, 
-                                                board, this_piece, aimSquare);
+                                                board, thisPiece, aimSquare);
         
         
         /*
@@ -173,54 +174,56 @@ public class Chessboard {
                 Piece opPiece;
                 Move moveVariant = new Move(apFig, thisColorKing)
                 potentialCheckStatus = controller.check_move(moveVariant, this.gameMoveNumber, 
-                                                            board, this_piece, aimSquare);
+                                                            board, thisPiece, aimSquare);
                     
             }
-            */
+        */
 
         switch (moveStatus) {
             case OK:
-                this.set(this.get(move.get_from_square()), aim_position);
-                this.remove(this_piece_position);    // ISSUE не будет работать рокировка
+
+                {
+                    Piece [][]clonedBoard = clone_board(board);
+
+                    //System.out.println("KING: " + thisColorKingPosition);
+                    
+                    for(Square opFigPosition : allOppositeFigures) {
+                        
+
+                        Piece opPiece = clonedBoard[opFigPosition.rank][opFigPosition.file];
+                        Piece ourKing = clonedBoard[thisColorKingPosition.rank][thisColorKingPosition.file];
+                        //System.out.println(opPiece + " " + opFigPosition);   
+
+                        Move moveVariant = new Move(opFigPosition, thisColorKingPosition);
+                        GameCode potentialCheckStatus;
+                        potentialCheckStatus = controller.check_move(moveVariant, this.gameMoveNumber + 1, 
+                                                                    clonedBoard, opPiece, ourKing);
+                        if(potentialCheckStatus == GameCode.OK)
+                            throw new IllegalMoveException(thisPiece + " cannot move to " 
+                                + aimPosition + " because you have check!");
+                    }
+                }
+
+
+                // Возможно это надо вынести в отдельный метод
+                this.set(this.get(move.get_from_square()), aimPosition);
+                this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
                 this.history.add(move);
+                
                 gameMoveNumber++; // делаем следующий ход
                 break;
             case ILLEGAL_1:
-                throw new IllegalMoveException("Piece " + this_piece + " at " 
-                        + this_piece_position + " is not yours.");
+                throw new IllegalMoveException("Piece " + thisPiece + " at " 
+                        + thisPiecePosition + " is not yours.");
             case ILLEGAL_2:
-                throw new IllegalMoveException(this_piece + " cannot chop " + aim_position);
+                throw new IllegalMoveException(thisPiece + " cannot chop " + aimPosition);
             case ILLEGAL_3:
-                throw new IllegalMoveException(this_piece + " cannot move to " + aim_position);
+                throw new IllegalMoveException(thisPiece + " cannot move to " + aimPosition);
             case ILLEGAL_4:
-                throw new IllegalMoveException(this_piece + " cannot move to " + aim_position +
+                throw new IllegalMoveException(thisPiece + " cannot move to " + aimPosition +
                                                     ", because there is a barrier.");
         }
 
-
-        /*
-        if (moveStatus == GameCode.OK) { 
-            this.set(this.get(move.get_from_square()), aim_position);
-            this.remove(this_piece_position);    // ISSUE не будет работать рокировка
-            gameMoveNumber++; // делаем следующий ход
-        } else
-        if (moveStatus == GameCode.ILLEGAL_1) {
-
-                    throw new IllegalMoveException("Piece " + this_piece + " at " 
-                        + this_piece_position + " is not yours.");
-        } else 
-        if (moveStatus == GameCode.ILLEGAL_2) {
-            throw new IllegalMoveException(this_piece + " cannot chop " + aim_position);
-        } else 
-        if (moveStatus == GameCode.ILLEGAL_3) {
-            throw new IllegalMoveException(this_piece + " cannot move to " + aim_position);
-        } else
-        if (moveStatus == GameCode.ILLEGAL_4) {
-            throw new IllegalMoveException(this_piece + " cannot move to " + aim_position +
-                ", because there is a barrier.");
-        }
-        */
-        // Вот тут проверим есть ли шах?
     }
 
 
