@@ -70,7 +70,7 @@ public class ChessGame {
 				Move move = InputHandler.getNextMove(query);
 				board.move(move);
 			} catch (IllegalMoveException e) {
-				System.out.println("You are mistaking: " + e);
+				System.out.println(e);
 				continue mainLoop;
 			} catch (EmptyHistoryException e) {
 				System.out.println("Your history is empty: " + e);
