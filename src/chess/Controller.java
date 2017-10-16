@@ -31,36 +31,36 @@ public class Controller {
 	}
 
 	public Square[] find_all_opposite_figures(Piece[][] board, int gameMoveNumber) {
-            Color oppositeColor = gameMoveNumber % 2 == 1 ? Color.BLACK : Color.WHITE;
-            int opFiguresQuantity = 0;
-            int figIterator = 0;
-            
-            for(int rank = 0; rank < 8; rank++) {
-                for(int file = 0; file < 8; file++) {
-                    if (board[rank][file] != null) {
-	                    Piece p = board[rank][file];
-	                    if(p.get_color() == oppositeColor)
-	                        opFiguresQuantity++;
-                	}
-                }
+        Color oppositeColor = gameMoveNumber % 2 == 1 ? Color.BLACK : Color.WHITE;
+        int opFiguresQuantity = 0;
+        int figIterator = 0;
+        
+        for(int rank = 0; rank < 8; rank++) {
+            for(int file = 0; file < 8; file++) {
+                if (board[rank][file] != null) {
+                    Piece p = board[rank][file];
+                    if(p.get_color() == oppositeColor)
+                        opFiguresQuantity++;
+            	}
             }
-            
-            Square []oppositeFigures = new Square[opFiguresQuantity];
-
-            for(int rank = 0; rank < 8; rank++) {
-                for(int file = 0; file < 8; file++) {
-                	if (board[rank][file] != null) {
-	                    Piece p = board[rank][file];
-	                    if(p.get_color() == oppositeColor) {
-	                        oppositeFigures[figIterator] = new Square(file, rank);
-	                        figIterator++;
-	                    }
-	                }
-                }
-            }
-            
-            return oppositeFigures;
         }
+        
+        Square []oppositeFigures = new Square[opFiguresQuantity];
+
+        for(int rank = 0; rank < 8; rank++) {
+            for(int file = 0; file < 8; file++) {
+            	if (board[rank][file] != null) {
+                    Piece p = board[rank][file];
+                    if(p.get_color() == oppositeColor) {
+                        oppositeFigures[figIterator] = new Square(file, rank);
+                        figIterator++;
+                    }
+                }
+            }
+        }
+        
+        return oppositeFigures;
+    }
         
 
             

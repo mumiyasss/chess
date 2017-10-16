@@ -1,2 +1,6 @@
 #!/bin/bash
 find -type f -name "*.class" -exec rm -f {} \;
+
+echo " buiding..."
+javac ChessGame.java
+echo " done"

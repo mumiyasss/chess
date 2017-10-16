@@ -1,7 +1,11 @@
 package chess;
 
 import chess.pieces.*;
+
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 
 public class Chessboard {
     // String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
@@ -34,8 +38,16 @@ public class Chessboard {
     }
 
     public void setup() {
-        /// Передаются кординаты в метод set()
 
+        // ctrl + C
+        this.board = new Piece[RANK_SIZE][FILE_SIZE];
+        controller = new Controller(); // Инициализация контроллера 
+        gameMoveNumber = 1;
+        history = new GameHistory();
+        // ctrl + V
+
+
+        /// Передаются кординаты в метод set()
         // Сначала ставим все ячейки в null
         for (char f : files) {
             for (int r : ranks) {
@@ -71,16 +83,18 @@ public class Chessboard {
 
 
     // LOAD CHESSBOARD TO CONTINUE THE GAME
-    public void setup(GameHistory history) {
+    public void setup(GameHistory history) throws IOException {
         this.setup();
         this.history = history;
         Move[] moves = this.history.getMoves();
         for (Move m : moves) {
-            try {
-                this.move(m);
-            } catch (IllegalMoveException e) {
-                System.out.println(e + "History is corrupted.");
-            }
+            // try {
+                this.set(this.get(m.FROM), m.TO);
+                this.remove(m.FROM);
+                // this.move(m);
+            // } catch (IllegalMoveException e) {
+            //     throw new IOException("History is corrupted.");
+            // }
         }
         this.gameMoveNumber = history.moveCount();
     }
@@ -103,10 +117,12 @@ public class Chessboard {
     }
 
     // CANCEL LAST MOVE
-    public void cancelLastMove() throws EmptyHistoryException, IOException {
-        this.history.log();
-        this.history.pop(); // EXCEPTION HERE
+    public Move cancelLastMove() throws EmptyHistoryException, IOException {
+        Move lastMove = this.history.pop(); // EXCEPTION HERE
+
         this.setup(history);
+
+        return lastMove;
     }
 
 
@@ -123,6 +139,10 @@ public class Chessboard {
         return cloned_board;
     }
     */
+
+    public void save() throws IOException {
+        this.history.log();
+    }
 
     // perform a move
     public void move(Move move) throws IllegalMoveException {

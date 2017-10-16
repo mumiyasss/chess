@@ -1,9 +1,4 @@
 
-import java.util.Scanner;
-
-// import chess.pieces.*;
-
-import java.io.IOException;
 
 import chess.Chessboard;
 import chess.EmptyHistoryException;
@@ -12,22 +7,28 @@ import chess.IllegalMoveException;
 import chess.InputHandler;
 import chess.Move;
 
+import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class ChessGame {
 	public static void main(String[] args) throws IOException {
-		if (args.length > 0) {
-			run(new Chessboard(), new GameHistory(args[0]));
-		} else {
-			run(new Chessboard(), new GameHistory());
-		}
+		run(args.length > 0 ? args[0] : "");
 	}
 
 	// Runs the game
-	static void run(Chessboard board, GameHistory history) throws IOException {
+	static void run(String savedGameFileName) throws IOException {
 		Scanner scanner = new Scanner(System.in);
 
-		if (!history.isEmpty()) {
-			board.setup(history);
+		Chessboard board;
+		board = new Chessboard();
+
+		if (!savedGameFileName.isEmpty()) {
+			// board = new Chessboard(new GameHistory(new File(savedGameFileName)));
+			board.setup(new GameHistory(new File(savedGameFileName)));
 		} else {
+			// board = new Chessboard();
 			board.setup();
 		}
 
@@ -43,7 +44,7 @@ public class ChessGame {
 				continue mainLoop;
 			}
 
-			try {
+			errorHandler : try {
 				if (query.charAt(0) == '/') {
 					String[] argsLine = query.split(" ");
 					switch (argsLine[0]) {
@@ -51,11 +52,13 @@ public class ChessGame {
 							return;
 
 						case "/cancel":
-							board.cancelLastMove();
-							continue mainLoop;
+							Move mv = board.cancelLastMove();
+							System.out.println(mv + " had been сancelled");
+							break errorHandler;
 
 						case "/save":
-							history.log();
+							board.save();
+							System.out.println("Succes!");
 							continue mainLoop;
 
 						default:

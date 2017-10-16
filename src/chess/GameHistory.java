@@ -26,11 +26,11 @@ public class GameHistory {
 
 	// copies history from file
 	// then Chessboard performs all these moves
-	public GameHistory(String fileName)
+	public GameHistory(File file)
 			throws FileNotFoundException, IOException {
 		this();
 
-		Scanner reader = new Scanner(new File(fileName));
+		Scanner reader = new Scanner(file);
 		
 		while (reader.hasNext()) {
 			String line = reader.nextLine().trim();
@@ -58,8 +58,7 @@ public class GameHistory {
 			throw new EmptyHistoryException("There is no move to cancel.");
 		}
 		Move canceledMove = this.logList.remove(this.logList.size() - 1);
-		Move inversedMove = new Move(canceledMove.TO, canceledMove.FROM);
-		return inversedMove;
+		return canceledMove;
 	}
 
 	public Move[] getMoves() {
@@ -76,11 +75,12 @@ public class GameHistory {
 	// saves moves to file
 	public void log() throws IOException {
 		String fileName
-			= String.join("_", new Date().toString().split(" ")) + ".log";
+			= String.join("_", new Date().toString().split(" ")) + ".save";
 		FileWriter writer = new FileWriter(fileName);
 
 		int moveC = 1;
-		for (Move m : this.logList) {
+		Move[] moves = this.getMoves(); 
+		for (Move m : moves) {
 			writer.write(moveC + ". " + m + "\n");
 			moveC++;
 		}

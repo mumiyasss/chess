@@ -22,6 +22,6 @@ public class Move {
 	}
 
 	public String toString() {
-		return FROM + " " + TO;
+		return this.FROM + " " + this.TO;
 	}
 }
