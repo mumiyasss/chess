@@ -16,6 +16,7 @@ public class Chessboard {
     protected static final int RANK_SIZE = 8;
     protected static final int FILE_SIZE = 8;
     protected static Controller controller;
+    protected static CheckCheckSystem checkCheckSystem;
     protected static Controller check_system_controller;
     protected static int gameMoveNumber; // Номер хода
 
@@ -33,6 +34,7 @@ public class Chessboard {
     public Chessboard() {
         this.board = new Piece[RANK_SIZE][FILE_SIZE];
         controller = new Controller(); // Инициализация контроллера 
+        checkCheckSystem = new CheckCheckSystem();
         gameMoveNumber = 1;
         history = new GameHistory();
     }
@@ -125,59 +127,15 @@ public class Chessboard {
         return lastMove;
     }
 
-
-    
-    public Piece[][] clone_board(Piece [][] original_board) {
-        Piece [][]clonedBoard = new Piece[RANK_SIZE][FILE_SIZE];
-        for(int i = 0; i < RANK_SIZE; i++) {
-            for(int j = 0; j < FILE_SIZE; j++) {
-                if(original_board[i][j] == null)
-                    clonedBoard[i][j] = null;
-                else clonedBoard[i][j] = original_board[i][j];
-            }
-        } 
-        return clonedBoard;
-    }
-    
-
     public void save() throws IOException {
         this.history.log();
     }
 
-    private GameCode check_check(int gameMoveNumber) {
-        Piece [][]clonedBoard = clone_board(board);
-
-        Square thisColorKingPosition = controller.find_this_color_king(this.board, 
-                                                                gameMoveNumber);
-
-        Square allOppositeFigures[] = controller.find_all_opposite_figures(this.board,
-                                                                gameMoveNumber);
-        
-        for(Square opFigPosition : allOppositeFigures) {
-            
-
-            Piece opPiece = clonedBoard[opFigPosition.rank][opFigPosition.file];
-            Piece ourKing = clonedBoard[thisColorKingPosition.rank][thisColorKingPosition.file];
-            //System.out.println(opPiece + " " + opFigPosition);   
-
-            Move moveVariant = new Move(opFigPosition, thisColorKingPosition);
-            GameCode potentialCheckStatus;
-            potentialCheckStatus = controller.check_move(moveVariant, gameMoveNumber + 1, 
-                                                        clonedBoard, opPiece, ourKing);
-            
-            
-            
-            if(potentialCheckStatus == GameCode.OK)
-                return GameCode.CHECK;
-            
-                
-        }
-        return GameCode.NO_CHECK;
-    }
-
+    
     // perform a move
     // THIS METHOD IS TOO BIG. IT SHOULD BE DIVIDED.
-    public void move(Move move) throws IllegalMoveException {
+    public GameCode move(Move move) throws IllegalMoveException {
+
         Square thisPiecePosition = move.get_from_square();
         Square aimPosition = move.get_to_square();     
 
@@ -197,7 +155,7 @@ public class Chessboard {
         switch (moveStatus) {
             case OK:
                 // Возможно это надо вынести в отдельный метод
-                this.set(this.get(move.get_from_square()), aimPosition);
+                this.set(this.get(thisPiecePosition), aimPosition);
                 this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
                 this.history.add(move);
                 
@@ -207,11 +165,12 @@ public class Chessboard {
                                                         // P.S всё из-за того что cancelLastMove()
                                                         // меняет gameMoveNumber
                                                         // P.P.S TODO: исправить 
-                if (check_check(gameMoveNumber) == GameCode.CHECK) {
+                
+                if (checkCheckSystem.check_check(board,
+                        controller, gameMoveNumber) == GameCode.CHECK) {
                     try {
                         cancelLastMove(); 
                         gameMoveNumber = gameMoveNumberSAVE; // Восстанавливаем номер хода
-
                     } catch (EmptyHistoryException h) {
                         System.out.println(h);
                     } catch (IOException io) {
@@ -223,6 +182,16 @@ public class Chessboard {
                 }
 
                 gameMoveNumber++; // делаем следующий ход
+
+                 // Если есть шах, то предупредим и проверим на мат.
+                if (checkCheckSystem.check_check(board,
+                                    controller, gameMoveNumber) == GameCode.CHECK) {
+                        System.out.println("Шах!"); // TODO: Заменить это на нормальный вывод
+                }
+                if (thisPiecePosition.rank == 7 && thisPiece.PAWN) {
+                    
+                    // TODO: make smth with PAWN on the finish rank
+                }
                 break;
             case ILLEGAL_1:
                 throw new IllegalMoveException("Piece " + thisPiece + " at " 
@@ -236,6 +205,7 @@ public class Chessboard {
                                                     ", так как существует препятствие на пути.");
         }
 
+        return GameCode.NO_CHECK;
     }
 
 

@@ -7,7 +7,8 @@ public class King extends Piece {
 	public King(Color color) {
 		this.icon = '♔';
 		this.color = color;
-                this.KING = true;
+        
+        this.KING = true;
 
 		if (color == Color.WHITE) {
 			this.icon = '♚';
