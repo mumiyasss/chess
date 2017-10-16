@@ -1,15 +1,16 @@
 
 import java.util.Scanner;
 
-// import chess.pieces.*;.
+// import chess.pieces.*;
 
 import java.io.IOException;
 
-import chess.Chessboard; // DO WE REALLY NEED SMTH BUT CHESSBOARD HERE?
+import chess.Chessboard;
+import chess.EmptyHistoryException;
 import chess.GameHistory;
+import chess.IllegalMoveException;
 import chess.InputHandler;
 import chess.Move;
-import chess.IllegalMoveException;
 
 public class ChessGame {
 	public static void main(String[] args) throws IOException {
@@ -18,7 +19,6 @@ public class ChessGame {
 		} else {
 			run(new Chessboard(), new GameHistory());
 		}
-
 	}
 
 	// Runs the game
@@ -34,41 +34,44 @@ public class ChessGame {
 		System.out.println("_______CHESS_______");
 		System.out.println(board);
 		
-		mainloop : while (true) {
+		mainLoop : while (true) {
 			// Считывание пользовательского ввода 
 			String query = scanner.nextLine().trim();
 
 			// Проверка на пустую строку при вводе
 			if (query.isEmpty()) {
-				continue;
+				continue mainLoop;
 			}
-			try {
 
-			// Выход из приложения при нажатии /exit
+			try {
 				if (query.charAt(0) == '/') {
 					String[] argsLine = query.split(" ");
 					switch (argsLine[0]) {
 						case "/exit":
 							return;
 
-						case "/save":
-							history.log();
-							continue mainloop;
-
 						case "/cancel":
 							board.cancelLastMove();
-							continue mainloop;
+							continue mainLoop;
+
+						case "/save":
+							history.log();
+							continue mainLoop;
 
 						default:
 							System.out.println("Invalid command: " + query);
+							continue mainLoop;
 					}
 				}
 
 				Move move = InputHandler.getNextMove(query);
 				board.move(move);
-			} catch (Exception e) {
-				System.out.println("Error: " + e);
-				continue;
+			} catch (IllegalMoveException e) {
+				System.out.println("You are mistaking: " + e);
+				continue mainLoop;
+			} catch (EmptyHistoryException e) {
+				System.out.println("Your history is empty: " + e);
+				continue mainLoop;
 			}
 
 			InputHandler.clearScreen();

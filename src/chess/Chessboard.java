@@ -1,6 +1,7 @@
 package chess;
 
 import chess.pieces.*;
+import java.io.IOException;
 
 public class Chessboard {
     // String pieces = "♔♕♖♗♘♙ ♚♛♜♝♞♟"; just characters
@@ -73,17 +74,18 @@ public class Chessboard {
     public void setup(GameHistory history) {
         this.setup();
         this.history = history;
-        for (Move m : this.history.logList) {
+        for (Move m : this.history.getMoves()) {
             try {
                 this.move(m);
             } catch (IllegalMoveException e) {
                 System.out.println(e + "History is corrupted.");
             }
         }
+        this.gameMoveNumber = history.moveCount();
     }
 
 
-    // add a piece to board
+    // add a piece to board, also removes piece before adding 
     public void set(Piece piece, Square position) {
         this.board[position.rank][position.file] = piece;
     }
@@ -100,12 +102,10 @@ public class Chessboard {
     }
 
     // CANCEL LAST MOVE
-    public void cancelLastMove() throws Exception {
-        Move cancellingMove = this.history.pop(); // EXCEPTION HERE
-        // TODO Idk where to decrease moveCount
-        this.set(this.get(cancellingMove.FROM), cancellingMove.TO);
-        this.remove(cancellingMove.FROM);
-        this.gameMoveNumber -= 1;
+    public void cancelLastMove() throws EmptyHistoryException, IOException {
+        this.history.log();
+        this.history.pop(); // EXCEPTION HERE
+        this.setup(history);
     }
 
 

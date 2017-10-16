@@ -53,9 +53,9 @@ public class GameHistory {
 	}
 
 	// DELETE THE LAST MOVE FROM HISTORY
-	public Move pop() throws Exception {
+	public Move pop() throws EmptyHistoryException {
 		if (this.logList.size() == 0) {
-			throw new Exception("There is no move to cancel.");
+			throw new EmptyHistoryException("There is no move to cancel.");
 		}
 		Move canceledMove = this.logList.remove(this.logList.size() - 1);
 		Move inversedMove = new Move(canceledMove.TO, canceledMove.FROM);
