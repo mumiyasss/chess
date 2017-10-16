@@ -144,6 +144,37 @@ public class Chessboard {
         this.history.log();
     }
 
+    private GameCode check_check(int gameMoveNumber) {
+        Piece [][]clonedBoard = clone_board(board);
+
+        Square thisColorKingPosition = controller.find_this_color_king(this.board, 
+                                                                gameMoveNumber);
+
+        Square allOppositeFigures[] = controller.find_all_opposite_figures(this.board,
+                                                                gameMoveNumber);
+        
+        for(Square opFigPosition : allOppositeFigures) {
+            
+
+            Piece opPiece = clonedBoard[opFigPosition.rank][opFigPosition.file];
+            Piece ourKing = clonedBoard[thisColorKingPosition.rank][thisColorKingPosition.file];
+            //System.out.println(opPiece + " " + opFigPosition);   
+
+            Move moveVariant = new Move(opFigPosition, thisColorKingPosition);
+            GameCode potentialCheckStatus;
+            potentialCheckStatus = controller.check_move(moveVariant, gameMoveNumber + 1, 
+                                                        clonedBoard, opPiece, ourKing);
+            
+            
+            
+            if(potentialCheckStatus == GameCode.OK)
+                return GameCode.CHECK;
+            
+                
+        }
+        return GameCode.NO_CHECK;
+    }
+
     // perform a move
     // THIS METHOD IS TOO BIG. IT SHOULD BE DIVIDED.
     public void move(Move move) throws IllegalMoveException {
@@ -156,11 +187,7 @@ public class Chessboard {
         Piece aimSquare = 
             board[aimPosition.rank][aimPosition.file];
 
-        Square thisColorKingPosition = controller.find_this_color_king(this.board, 
-                                                                this.gameMoveNumber);
-
-        Square allOppositeFigures[] = controller.find_all_opposite_figures(this.board,
-                                                                this.gameMoveNumber);
+        
 
         GameCode moveStatus;
         moveStatus = controller.check_move(move, this.gameMoveNumber, 
@@ -182,27 +209,10 @@ public class Chessboard {
         switch (moveStatus) {
             case OK:
 
-                {
-                    Piece [][]clonedBoard = clone_board(board);
-
-                    //System.out.println("KING: " + thisColorKingPosition);
-                    
-                    for(Square opFigPosition : allOppositeFigures) {
-                        
-
-                        Piece opPiece = clonedBoard[opFigPosition.rank][opFigPosition.file];
-                        Piece ourKing = clonedBoard[thisColorKingPosition.rank][thisColorKingPosition.file];
-                        //System.out.println(opPiece + " " + opFigPosition);   
-
-                        Move moveVariant = new Move(opFigPosition, thisColorKingPosition);
-                        GameCode potentialCheckStatus;
-                        potentialCheckStatus = controller.check_move(moveVariant, this.gameMoveNumber + 1, 
-                                                                    clonedBoard, opPiece, ourKing);
-                        if(potentialCheckStatus == GameCode.OK)
-                            throw new IllegalMoveException(thisPiece + " cannot move to " 
+                if (check_check(gameMoveNumber) == GameCode.CHECK) 
+                    throw new IllegalMoveException(thisPiece + " cannot move to " 
                                 + aimPosition + " because you have check!");
-                    }
-                }
+                 
 
 
                 // Возможно это надо вынести в отдельный метод
@@ -216,12 +226,12 @@ public class Chessboard {
                 throw new IllegalMoveException("Piece " + thisPiece + " at " 
                         + thisPiecePosition + " is not yours.");
             case ILLEGAL_2:
-                throw new IllegalMoveException(thisPiece + " cannot chop " + aimPosition);
+                throw new IllegalMoveException(thisPiece + " не может рубить на клетке " + aimPosition);
             case ILLEGAL_3:
-                throw new IllegalMoveException(thisPiece + " cannot move to " + aimPosition);
+                throw new IllegalMoveException(thisPiece + " нельзя передвинуть на " + aimPosition);
             case ILLEGAL_4:
-                throw new IllegalMoveException(thisPiece + " cannot move to " + aimPosition +
-                                                    ", because there is a barrier.");
+                throw new IllegalMoveException(thisPiece + " нельзя передвинуть на " + aimPosition +
+                                                    ", так как существует препятствие на пути.");
         }
 
     }

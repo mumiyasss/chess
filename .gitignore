@@ -1,3 +1,5 @@
+*.save
+*.log
 .DS_Store
 *.swp
 *.class
