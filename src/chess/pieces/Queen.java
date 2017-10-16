@@ -22,12 +22,12 @@ public class Queen extends Piece {
 
 		// this means that Queen moves like a Rook
 		if (dFile == 0 || dRank == 0) {
-			if (!new Rook().isLegal(move)) {
+			if (!(new Rook(this.color)).isLegal(move, board)) {
 				return false;
 			}
 		} else {
 			// this means that Queen moves like a Bishop
-			if (!new Bishop().isLegal(move)) {
+			if (!(new Bishop(this.color)).isLegal(move, board)) {
 				return false;
 			}
 		}

@@ -1,25 +1,26 @@
 
 
+import java.io.IOException;
 import java.util.Scanner;
 
-import java.io.IOException;
-
-import chess.Chessboard; // DO WE REALLY NEED SMTH BUT CHESSBOARD HERE?
+import chess.Chessboard;
+import chess.EmptyHistoryException;
 import chess.GameHistory;
+import chess.IllegalMoveException;
 import chess.InputHandler;
 import chess.Move;
 
 public class ChessGame {
 	public static void main(String[] args) throws IOException {
 		if (args.length > 0) {
-			run(new Chessboard(), new GameHistory(args[0]));
+			run(new Chessboard());
 		} else {
-			run(new Chessboard(), new GameHistory());
+			run(new Chessboard());
 		}
 	}
 
 	// Runs the game
-	static void run(Chessboard board, GameHistory history) throws IOException {
+	static void run(Chessboard board, File) throws IOException {
 		Scanner scanner = new Scanner(System.in);
 
 		if (!history.isEmpty()) {
@@ -30,50 +31,52 @@ public class ChessGame {
 
 		System.out.println("_______CHESS_______");
 		System.out.println(board);
-
-		while (true) {
+		
+		mainLoop : while (true) {
+			// Считывание пользовательского ввода 
 			String query = scanner.nextLine().trim();
 
-			// check if input is an empty line and skip if true
+			// Проверка на пустую строку при вводе
 			if (query.isEmpty()) {
-				continue;
+				continue mainLoop;
 			}
 
-			// if input is a command
-			if (query.charAt(0) == '/') {
-				String[] argsLine = query.split(" ");
-				switch (argsLine[0]) {
-					case "/exit":
-						return;
+			errorHandler : try {
+				if (query.charAt(0) == '/') {
+					String[] argsLine = query.split(" ");
+					switch (argsLine[0]) {
+						case "/exit":
+							return;
 
-					case "/save":
-						history.log();
-						break;
+						case "/cancel":
+							board.cancelLastMove();
+							break errorHandler;
 
-					case "/cancel":
-						history.cancelLastMove();
-						break;
+						case "/save":
+							history.log();
+							continue mainLoop;
 
-					default:
-						System.out.println("Invalid command: " + query);
+						default:
+							System.out.println("Invalid command: " + query);
+							// Runtime.getRuntime().exec("");
+							continue mainLoop;
+					}
 				}
-			} else {
-				// move input handler
-				try {
-					Move move = InputHandler.getNextMove(query);
-					board.move(move);
-	
-					history.add(move);
-				} catch (Exception e) {
-					// System.out.println(e);
-					e.printStackTrace();
-					continue;
-				}
+
+				Move move = InputHandler.getNextMove(query);
+				board.move(move);
+			} catch (IllegalMoveException e) {
+				System.out.println("You are mistaking: " + e);
+				continue mainLoop;
+			} catch (EmptyHistoryException e) {
+				System.out.println("Your history is empty: " + e);
+				continue mainLoop;
 			}
 
 			InputHandler.clearScreen();
 			System.out.println("_______CHESS_______");
 			System.out.println(board);
-		}
-	} // END OF RUN()
+
+		} // EOF WHILE TRUE 
+	} // EOF RUN
 }

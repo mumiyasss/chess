@@ -29,13 +29,15 @@ public class Bishop extends Piece {
 		int rank = move.SOURCE.RANK + rankStep;
 
 		while (file != move.DESTINATION.FILE && rank != move.DESTINATION.RANK) {
-
 			Square s = new Square(file, rank);
 			Piece element = board.get(s);
 
 			if (element != null) {
 				return false;
 			}
+
+			file += fileStep;
+			rank += rankStep;
 		}
 
 		return true;

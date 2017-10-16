@@ -1,5 +1,12 @@
+
+
 package chess;
+
 import chess.pieces.*;
+
+import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Chessboard {
 
@@ -19,6 +26,10 @@ public class Chessboard {
 	public Chessboard() {
 		this.board = new Piece[BOARD_SIZE][BOARD_SIZE];
 		this.history = new GameHistory();
+	}
+
+	public Chessboard(File file) {
+		
 	}
 
 	// default chessboard setup
@@ -83,41 +94,45 @@ public class Chessboard {
 	}
 
 	// CANCEL LAST MOVE
-	public void cancelLastMove() throws Exception {
-		Move cancellingMove = this.history.pop();
-		this.forceMove(cancellingMove);
-	}
-
-
-	public boolean isAttackedBy(Color player, Square sqr) {
-
-		int file = sqr.FILE;
-		int rank = sqr.RANK;
-
-		if (this.get(file + 1, rank + 2) instanceof Knight && this.get(file + 1, rank + 2).getColor() == player
-				|| this.get(file + 1, rank - 2) instanceof Knight && this.get(file + 1, rank - 2).getColor() == player
-				|| this.get(file - 1, rank + 2) instanceof Knight && this.get(file - 1, rank + 2).getColor() == player
-				|| this.get(file - 1, rank - 2) instanceof Knight && this.get(file - 1, rank - 2).getColor() == player
-				|| this.get(file + 2, rank + 1) instanceof Knight && this.get(file + 2, rank + 1).getColor() == player
-				|| this.get(file + 2, rank - 1) instanceof Knight && this.get(file + 2, rank - 1).getColor() == player
-				|| this.get(file - 2, rank + 1) instanceof Knight && this.get(file - 2, rank + 1).getColor() == player
-				|| this.get(file - 2, rank - 1) instanceof Knight && this.get(file - 2, rank - 1).getColor() == player
-		) {
-			return true;
-		}
-
-		int attackedByPawnRank = player.toBool() ? -1 : 1;
+	public void cancelLastMove() throws EmptyHistoryException {
 		try {
-			if (this.get(file + 1, rank + attackedByPawnRank) instanceof Pawn && this.get(file + 1, rank + attackedByPawnRank).getColor() == player
-					|| this.get(file - 1, rank + attackedByPawnRank) instanceof Pawn && this.get(file + 1, rank + attackedByPawnRank).getColor() == player) {
-				return true;
-			}
-		} catch (Exceptino e) {}
-
-		// TODO
-
-		return false;
+			this.history.pop();
+			this.setup(this.history);
+		} catch (EmptyHistoryException e) {
+			throw e;
+		}
 	}
+
+
+	// public boolean isAttackedBy(Color player, Square sqr) {
+
+	// 	int file = sqr.FILE;
+	// 	int rank = sqr.RANK;
+
+	// 	if (this.get(file + 1, rank + 2) instanceof Knight && this.get(file + 1, rank + 2).getColor() == player
+	// 			|| this.get(file + 1, rank - 2) instanceof Knight && this.get(file + 1, rank - 2).getColor() == player
+	// 			|| this.get(file - 1, rank + 2) instanceof Knight && this.get(file - 1, rank + 2).getColor() == player
+	// 			|| this.get(file - 1, rank - 2) instanceof Knight && this.get(file - 1, rank - 2).getColor() == player
+	// 			|| this.get(file + 2, rank + 1) instanceof Knight && this.get(file + 2, rank + 1).getColor() == player
+	// 			|| this.get(file + 2, rank - 1) instanceof Knight && this.get(file + 2, rank - 1).getColor() == player
+	// 			|| this.get(file - 2, rank + 1) instanceof Knight && this.get(file - 2, rank + 1).getColor() == player
+	// 			|| this.get(file - 2, rank - 1) instanceof Knight && this.get(file - 2, rank - 1).getColor() == player
+	// 	) {
+	// 		return true;
+	// 	}
+
+	// 	int attackedByPawnRank = player.toBool() ? -1 : 1;
+	// 	try {
+	// 		if (this.get(file + 1, rank + attackedByPawnRank) instanceof Pawn && this.get(file + 1, rank + attackedByPawnRank).getColor() == player
+	// 				|| this.get(file - 1, rank + attackedByPawnRank) instanceof Pawn && this.get(file + 1, rank + attackedByPawnRank).getColor() == player) {
+	// 			return true;
+	// 		}
+	// 	} catch (Exception e) {}
+
+	// 	// TODO
+
+	// 	return false;
+	// }
 		
 
 	// perform a move with respect to ALL RULES
@@ -135,7 +150,7 @@ public class Chessboard {
 		}
 
 		// Can the player move this piece
-		if (this.history.moveCount() % 2 != movingPiece.getColor().toInt()) {
+		if ((this.history.moveCount() + 1) % 2 != movingPiece.getColor().toInt()) {
 			// if not throw exc
 			throw new IllegalMoveException(
 				"Piece " + movingPiece + " at " + source + " is not yours."
@@ -166,7 +181,7 @@ public class Chessboard {
 
 	
 	private void forceMove(Move move) {
-		this.set(this.get(move.DESTINATION), move.DESTINATION);
+		this.set(this.get(move.SOURCE), move.DESTINATION);
 		this.removeFrom(move.SOURCE);
 		this.history.add(move);
 	}
