@@ -193,33 +193,35 @@ public class Chessboard {
         moveStatus = controller.check_move(move, this.gameMoveNumber, 
                                                 board, thisPiece, aimSquare);
         
-        
-        /*
-            clonedBoard = clone_board(board);
-            
-            for(Square opFig : allOppositeFigures) {
-                Piece opPiece;
-                Move moveVariant = new Move(apFig, thisColorKing)
-                potentialCheckStatus = controller.check_move(moveVariant, this.gameMoveNumber, 
-                                                            board, thisPiece, aimSquare);
-                    
-            }
-        */
 
         switch (moveStatus) {
             case OK:
-
-                if (check_check(gameMoveNumber) == GameCode.CHECK) 
-                    throw new IllegalMoveException(thisPiece + " cannot move to " 
-                                + aimPosition + " because you have check!");
-                 
-
-
                 // Возможно это надо вынести в отдельный метод
                 this.set(this.get(move.get_from_square()), aimPosition);
                 this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
                 this.history.add(move);
                 
+                int gameMoveNumberSAVE = gameMoveNumber; // ПИЗДЕЦ НАХУЙ КАКОЙ КОСТЫЛЬ
+                                                        // Я ТАКИХ КОСТЫЛЕЙ В ЖИЗНИ НЕ ДЕЛАЛ.
+                                                        // 
+                                                        // P.S всё из-за того что cancelLastMove()
+                                                        // меняет gameMoveNumber
+                                                        // P.P.S TODO: исправить 
+                if (check_check(gameMoveNumber) == GameCode.CHECK) {
+                    try {
+                        cancelLastMove(); 
+                        gameMoveNumber = gameMoveNumberSAVE; // Восстанавливаем номер хода
+
+                    } catch (EmptyHistoryException h) {
+                        System.out.println(h);
+                    } catch (IOException io) {
+                        System.out.println(io);
+                    }
+
+                    throw new IllegalMoveException(thisPiece + " нельзя передвинуть на " 
+                                + aimPosition + ", потому что вам поставлен шах!");
+                }
+
                 gameMoveNumber++; // делаем следующий ход
                 break;
             case ILLEGAL_1:
