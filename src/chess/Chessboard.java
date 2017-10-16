@@ -110,9 +110,9 @@ public class Chessboard {
     }
 
 
-    /*
+    
     public Piece[][] clone_board(Piece [][] original_board) {
-        Piece [][]clonedBoard = ;
+        Piece [][]clonedBoard = new Piece[RANK_SIZE][FILE_SIZE];
         for(int i = 0; i < RANK_SIZE; i++) {
             for(int j = 0; j < FILE_SIZE; j++) {
                 if(original_board[i][j] == null)
@@ -120,9 +120,9 @@ public class Chessboard {
                 else clonedBoard[i][j] = original_board[i][j];
             }
         } 
-        return cloned_board;
+        return clonedBoard;
     }
-    */
+    
 
     // perform a move
     // THIS METHOD IS TOO BIG. IT SHOULD BE DIVIDED.
@@ -136,7 +136,7 @@ public class Chessboard {
         Piece aimSquare = 
             board[aimPosition.rank][aimPosition.file];
 
-        Square thisColorKing = controller.find_this_color_king(this.board, 
+        Square thisColorKingPosition = controller.find_this_color_king(this.board, 
                                                                 this.gameMoveNumber);
 
         Square allOppositeFigures[] = controller.find_all_opposite_figures(this.board,
@@ -161,6 +161,30 @@ public class Chessboard {
 
         switch (moveStatus) {
             case OK:
+
+                {
+                    Piece [][]clonedBoard = clone_board(board);
+
+                    //System.out.println("KING: " + thisColorKingPosition);
+                    
+                    for(Square opFigPosition : allOppositeFigures) {
+                        
+
+                        Piece opPiece = clonedBoard[opFigPosition.rank][opFigPosition.file];
+                        Piece ourKing = clonedBoard[thisColorKingPosition.rank][thisColorKingPosition.file];
+                        //System.out.println(opPiece + " " + opFigPosition);   
+
+                        Move moveVariant = new Move(opFigPosition, thisColorKingPosition);
+                        GameCode potentialCheckStatus;
+                        potentialCheckStatus = controller.check_move(moveVariant, this.gameMoveNumber + 1, 
+                                                                    clonedBoard, opPiece, ourKing);
+                        if(potentialCheckStatus == GameCode.OK)
+                            throw new IllegalMoveException(thisPiece + " cannot move to " 
+                                + aimPosition + " because you have check!");
+                    }
+                }
+
+
                 // Возможно это надо вынести в отдельный метод
                 this.set(this.get(move.get_from_square()), aimPosition);
                 this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
