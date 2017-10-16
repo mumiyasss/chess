@@ -51,7 +51,7 @@ public class ChessGame {
 							return;
 
 						case "/cancel":
-							board.cancelLastMove();
+							board.cancel_last_move();
 							continue mainLoop;
 
 						case "/save":
