@@ -17,7 +17,7 @@ import java.util.Date;
  * GameHistory
  */
 public class GameHistory {
-	public ArrayList<Move> logList; // PACKAGE DEFAULT
+	private ArrayList<Move> logList; // PACKAGE DEFAULT
 
 	// creates empty history
 	public GameHistory() {
@@ -60,6 +60,12 @@ public class GameHistory {
 		Move canceledMove = this.logList.remove(this.logList.size() - 1);
 		Move inversedMove = new Move(canceledMove.TO, canceledMove.FROM);
 		return inversedMove;
+	}
+
+	public Move[] getMoves() {
+		Move[] moves = {};
+		moves = this.logList.toArray(new Move[this.logList.size()]);
+		return moves;
 	}
 
 	// true if no moves are logged

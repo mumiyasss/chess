@@ -74,7 +74,8 @@ public class Chessboard {
     public void setup(GameHistory history) {
         this.setup();
         this.history = history;
-        for (Move m : this.history.getMoves()) {
+        Move[] moves = this.history.getMoves();
+        for (Move m : moves) {
             try {
                 this.move(m);
             } catch (IllegalMoveException e) {
