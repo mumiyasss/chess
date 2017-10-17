@@ -71,7 +71,7 @@ public class ChessGame {
 
 						case "/save":
 							board.save();
-							System.out.println("Успех!");
+							System.out.println("Сохранено!");
 							continue mainLoop;
 
 						default:
