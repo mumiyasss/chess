@@ -131,6 +131,14 @@ public class Chessboard {
         this.history.log();
     }
 
+    public void pawn_to_queen(Color color, Move move, 
+                                    Square thisPiecePosition, Square aimPosition) {
+        this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+        this.set(new  Queen(color), thisPiecePosition);
+        this.set(this.get(thisPiecePosition), aimPosition);
+        this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+        this.history.add(move);
+    }
     
     // perform a move
     // THIS METHOD IS TOO BIG. IT SHOULD BE DIVIDED.
@@ -154,22 +162,12 @@ public class Chessboard {
 
         switch (moveStatus) {
             case OK:
-                
+                // Делаем ферзя
                 if (thisPiecePosition.rank == 6 && thisPiece.PAWN && aimPosition.rank == 7) {
-                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
-                    this.set(new  Queen(Color.WHITE), thisPiecePosition);
-                    this.set(this.get(thisPiecePosition), aimPosition);
-                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
-                    this.history.add(move);
-
-
+                    pawn_to_queen(Color.WHITE, move, thisPiecePosition, aimPosition);
                 } else
                 if (thisPiecePosition.rank == 1 && thisPiece.PAWN && aimPosition.rank == 0) {
-                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
-                    this.set(new  Queen(Color.BLACK), thisPiecePosition);
-                    this.set(this.get(thisPiecePosition), aimPosition);
-                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
-                    this.history.add(move);
+                    pawn_to_queen(Color.BLACK, move, thisPiecePosition, aimPosition);
                 } else {
                     // Возможно это надо вынести в отдельный метод
                     this.set(this.get(thisPiecePosition), aimPosition);

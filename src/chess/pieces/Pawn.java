@@ -32,6 +32,7 @@ public class Pawn extends Piece {
 		}
 		return pathArr;
 	}
+
  
 	// TODO or check Chessboard; think about it
 	@Override
@@ -60,6 +61,7 @@ public class Pawn extends Piece {
 			if (relativeRankTo != 3 && relativeRankTo != 4) {  
                 return false; 		
 			}
+			
 		} else if (relativeRankFrom != (relativeRankTo - 1)) {
 			// Можно ходить только на одну клетку вперед
 			return false;
