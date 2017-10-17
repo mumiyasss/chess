@@ -96,7 +96,7 @@ public class Chessboard {
             //     throw new IOException("History is corrupted.");
             // }
         }
-        this.gameMoveNumber = history.moveCount();
+        this.gameMoveNumber = history.moveCount() + 1;
     }
 
 
@@ -121,6 +121,8 @@ public class Chessboard {
         Move lastMove = this.history.pop(); // EXCEPTION HERE
 
         this.setup(history);
+
+        this.gameMoveNumber = this.history.moveCount() + 1;
 
         return lastMove;
     }
