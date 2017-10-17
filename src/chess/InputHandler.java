@@ -3,6 +3,7 @@
 package chess;
 
 import java.io.IOException;
+import chess.exceptions.*;
 
 /**
  * InputHandler

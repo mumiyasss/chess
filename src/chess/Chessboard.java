@@ -1,6 +1,7 @@
 package chess;
 
 import chess.pieces.*;
+import chess.exceptions.*;
 
 import java.io.IOException;
 import java.io.File;
@@ -216,8 +217,8 @@ public class Chessboard {
 
                 break;
             case ILLEGAL_1:
-                throw new IllegalMoveException("Piece " + thisPiece + " at " 
-                        + thisPiecePosition + " is not yours.");
+                throw new IllegalMoveException("Фигурка " + thisPiece + "  на " 
+                        + thisPiecePosition + " не ваша.");
             case ILLEGAL_2:
                 throw new IllegalMoveException(thisPiece + " не может рубить на клетке " + aimPosition);
             case ILLEGAL_3:
@@ -236,7 +237,7 @@ public class Chessboard {
         StringBuilder builder = new StringBuilder(200); // size of output
 
         String sep = " ";
-        String cor = "‧"; // corner character
+        String cor = "🙾"; // corner character
 
         builder.append(cor);
 
