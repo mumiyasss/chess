@@ -77,6 +77,9 @@ public class ChessGame {
 			} catch (EmptyHistoryException e) {
 				System.out.println("Your history is empty: " + e);
 				continue mainLoop;
+			} catch (IOException e) {
+				System.out.println("Input is invalid: " + e);
+				continue mainLoop;
 			}
 
 			InputHandler.clearScreen();
