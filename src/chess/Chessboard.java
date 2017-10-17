@@ -18,7 +18,7 @@ public class Chessboard {
     protected static Controller controller;
     protected static CheckCheckSystem checkCheckSystem;
     protected static Controller check_system_controller;
-    protected static int gameMoveNumber; // Номер хода
+    public static int gameMoveNumber; // Номер хода
 
     private GameHistory history;
 
@@ -142,6 +142,13 @@ public class Chessboard {
         this.history.add(move);
     }
     
+    public GameCode check_status() {
+        if (checkCheckSystem.check_check(board,
+                        controller, gameMoveNumber) == GameCode.CHECK)
+            return GameCode.CHECK;
+        return GameCode.NO_CHECK;
+    }
+
     // perform a move
     // THIS METHOD IS TOO BIG. IT SHOULD BE DIVIDED.
     public GameCode move(Move move) throws IllegalMoveException {

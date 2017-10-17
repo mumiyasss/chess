@@ -6,11 +6,13 @@ import chess.GameHistory;
 import chess.IllegalMoveException;
 import chess.InputHandler;
 import chess.Move;
+import chess.GameCode;
 
 import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
 
 public class ChessGame {
 	public static void main(String[] args) throws IOException {
@@ -38,6 +40,16 @@ public class ChessGame {
 		
 		mainLoop : while (true) {
 			// Считывание пользовательского ввода 
+			
+			// Проверка на шах
+			if (board.check_status() == GameCode.CHECK) {
+				System.out.println("Шах!");
+			}
+
+			// Скажем чей щас ход
+			if (board.gameMoveNumber % 2 == 0) {
+				System.out.print("Ход чёрных: ");
+			} else System.out.print("Ход белых: ");
 			String query = scanner.nextLine().trim();
 
 			// Проверка на пустую строку при вводе
