@@ -1,6 +1,6 @@
 
 
-package chess;
+package chess.exceptions;
 
 public class EmptyHistoryException extends Exception {
 	String errorMessage;

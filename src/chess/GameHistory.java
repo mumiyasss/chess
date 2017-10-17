@@ -2,7 +2,7 @@
 
 package chess;
 
-import chess.exceptions.*;
+import chess.exceptions.EmptyHistoryException;
 
 import java.io.IOException;
 import java.io.File;

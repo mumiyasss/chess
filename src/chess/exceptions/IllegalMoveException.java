@@ -1,6 +1,6 @@
 
 
-package chess;
+package chess.exceptions;
 
 /**
  * IllegalMoveException

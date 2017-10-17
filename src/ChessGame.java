@@ -1,9 +1,8 @@
 
 
 import chess.Chessboard;
-import chess.EmptyHistoryException;
+import chess.exceptions.*;
 import chess.GameHistory;
-import chess.IllegalMoveException;
 import chess.InputHandler;
 import chess.Move;
 import chess.GameCode;
