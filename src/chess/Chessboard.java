@@ -184,12 +184,7 @@ public class Chessboard {
                     this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
                     this.history.add(move);
                 }
-                int gameMoveNumberSAVE = gameMoveNumber; // ПИЗДЕЦ НАХУЙ КАКОЙ КОСТЫЛЬ
-                                                        // Я ТАКИХ КОСТЫЛЕЙ В ЖИЗНИ НЕ ДЕЛАЛ.
-                                                        // 
-                                                        // P.S всё из-за того что cancelLastMove()
-                                                        // меняет gameMoveNumber
-                                                        // P.P.S TODO: исправить 
+                int gameMoveNumberSAVE = gameMoveNumber; 
                 
                 if (checkCheckSystem.check_check(board,
                         controller, gameMoveNumber) == GameCode.CHECK) {
