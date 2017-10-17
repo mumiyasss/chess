@@ -43,6 +43,7 @@ public class ChessGame {
 			// Проверка на шах
 			if (board.check_status() == GameCode.CHECK) {
 				System.out.println("Шах!");
+				
 			}
 
 			// Скажем чей щас ход
