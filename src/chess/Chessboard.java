@@ -1,6 +1,7 @@
 package chess;
 
 import chess.pieces.*;
+import chess.exceptions.*;
 
 import java.io.IOException;
 import java.io.File;
