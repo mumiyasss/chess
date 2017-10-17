@@ -234,10 +234,10 @@ public class Chessboard {
 
     // returns pseudo graphical visualization
     public String toString() {
-        StringBuilder builder = new StringBuilder(200); // size of output
+        StringBuilder builder = new StringBuilder(202); // size of output
 
         String sep = " ";
-        String cor = "🙾"; // corner character
+        String cor = "❤"; // corner character
 
         builder.append(cor);
 
