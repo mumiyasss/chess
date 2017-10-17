@@ -24,7 +24,7 @@ public class Chessboard {
 
 
     
-    protected Piece[][] board; // package default
+    protected Piece[][] board; // Наша доска
 
     final static char[] files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
     final static  int[] ranks = {8, 7, 6, 5, 4, 3, 2, 1};
@@ -154,11 +154,28 @@ public class Chessboard {
 
         switch (moveStatus) {
             case OK:
-                // Возможно это надо вынести в отдельный метод
-                this.set(this.get(thisPiecePosition), aimPosition);
-                this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
-                this.history.add(move);
                 
+                if (thisPiecePosition.rank == 6 && thisPiece.PAWN && aimPosition.rank == 7) {
+                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+                    this.set(new  Queen(Color.WHITE), thisPiecePosition);
+                    this.set(this.get(thisPiecePosition), aimPosition);
+                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+                    this.history.add(move);
+
+
+                } else
+                if (thisPiecePosition.rank == 1 && thisPiece.PAWN && aimPosition.rank == 0) {
+                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+                    this.set(new  Queen(Color.BLACK), thisPiecePosition);
+                    this.set(this.get(thisPiecePosition), aimPosition);
+                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+                    this.history.add(move);
+                } else {
+                    // Возможно это надо вынести в отдельный метод
+                    this.set(this.get(thisPiecePosition), aimPosition);
+                    this.remove(thisPiecePosition);    // ISSUE не будет работать рокировка
+                    this.history.add(move);
+                }
                 int gameMoveNumberSAVE = gameMoveNumber; // ПИЗДЕЦ НАХУЙ КАКОЙ КОСТЫЛЬ
                                                         // Я ТАКИХ КОСТЫЛЕЙ В ЖИЗНИ НЕ ДЕЛАЛ.
                                                         // 
@@ -188,10 +205,8 @@ public class Chessboard {
                                     controller, gameMoveNumber) == GameCode.CHECK) {
                         System.out.println("Шах!"); // TODO: Заменить это на нормальный вывод
                 }
-                if (thisPiecePosition.rank == 7 && thisPiece.PAWN) {
-                    
-                    // TODO: make smth with PAWN on the finish rank
-                }
+             
+
                 break;
             case ILLEGAL_1:
                 throw new IllegalMoveException("Piece " + thisPiece + " at " 
