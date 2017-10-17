@@ -10,7 +10,7 @@ javac ChessGame.java
 echo " " 
 echo "Program is running..."
 echo " "
-java ChessGame
+java  ChessGame Tue_Oct_17_06:47:59_MSK_2017.save
 
 rm -rf *.class
 cd chess

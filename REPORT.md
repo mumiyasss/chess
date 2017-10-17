@@ -18,6 +18,7 @@
   * merge conflict
   * // TODO ...
 ## What did we used?
+  * Computer
   * Java
   * GitHub
   * vim

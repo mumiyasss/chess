@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 public class ChessGame {
 	public static void main(String[] args) throws IOException {
+		InputHandler.clearScreen();
 		run(args.length > 0 ? args[0] : "");
 	}
 
@@ -58,7 +59,7 @@ public class ChessGame {
 
 						case "/save":
 							board.save();
-							System.out.println("Succes!");
+							System.out.println("Success!");
 							continue mainLoop;
 
 						default:
@@ -69,6 +70,7 @@ public class ChessGame {
 
 				Move move = InputHandler.getNextMove(query);
 				board.move(move);
+
 			} catch (IllegalMoveException e) {
 				System.out.println(e);
 				continue mainLoop;

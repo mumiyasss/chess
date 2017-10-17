@@ -8,6 +8,8 @@ public class Pawn extends Piece {
 		this.icon = '♙';
 		this.color = color;
 
+		this.PAWN = true;
+
 		if (color == Color.WHITE) {
 			this.icon = '♟';
 		}
@@ -50,7 +52,6 @@ public class Pawn extends Piece {
 			relativeRankTo = 8 - relativeRankTo + 1;
 		}
 
-		System.out.println(relativeFileFrom);
 		//
 		// Рассматриваем движение вперед
 		//
@@ -76,9 +77,6 @@ public class Pawn extends Piece {
 			return false;
 		
 
-		if (move.FROM.rank == 7) {
-			// TODO описать создание новой фигуры
-		}
 		return true; // И только тогда возывращаем true
 	}
 
