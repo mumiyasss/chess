@@ -54,16 +54,16 @@ public class ChessGame {
 
 						case "/cancel":
 							Move mv = board.cancelLastMove();
-							System.out.println(mv + " had been сancelled");
+							System.out.println(mv + " отменён");
 							break errorHandler;
 
 						case "/save":
 							board.save();
-							System.out.println("Success!");
+							System.out.println("Успех!");
 							continue mainLoop;
 
 						default:
-							System.out.println("Invalid command: " + query);
+							System.out.println("Неверная команда: " + query);
 							continue mainLoop;
 					}
 				}
@@ -75,7 +75,10 @@ public class ChessGame {
 				System.out.println(e);
 				continue mainLoop;
 			} catch (EmptyHistoryException e) {
-				System.out.println("Your history is empty: " + e);
+				System.out.println("Итстория пуста: " + e);
+				continue mainLoop;
+			} catch (IOException e) {
+				System.out.println("Неверный ввод: " + e);
 				continue mainLoop;
 			}
 

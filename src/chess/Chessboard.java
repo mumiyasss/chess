@@ -98,7 +98,7 @@ public class Chessboard {
             //     throw new IOException("History is corrupted.");
             // }
         }
-        this.gameMoveNumber = history.moveCount();
+        this.gameMoveNumber = history.moveCount() + 1;
     }
 
 
@@ -123,6 +123,8 @@ public class Chessboard {
         Move lastMove = this.history.pop(); // EXCEPTION HERE
 
         this.setup(history);
+
+        this.gameMoveNumber = this.history.moveCount() + 1;
 
         return lastMove;
     }
@@ -207,8 +209,8 @@ public class Chessboard {
 
                 break;
             case ILLEGAL_1:
-                throw new IllegalMoveException("Piece " + thisPiece + " at " 
-                        + thisPiecePosition + " is not yours.");
+                throw new IllegalMoveException("Фигурка " + thisPiece + "  на " 
+                        + thisPiecePosition + " не ваша.");
             case ILLEGAL_2:
                 throw new IllegalMoveException(thisPiece + " не может рубить на клетке " + aimPosition);
             case ILLEGAL_3:
@@ -227,7 +229,7 @@ public class Chessboard {
         StringBuilder builder = new StringBuilder(200); // size of output
 
         String sep = " ";
-        String cor = "‧"; // corner character
+        String cor = "🙾"; // corner character
 
         builder.append(cor);
 
